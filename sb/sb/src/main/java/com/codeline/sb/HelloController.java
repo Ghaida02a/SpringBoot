@@ -62,13 +62,13 @@ public class HelloController {
          return courses;
     }
 
-    @GetMapping("getCourseById")
-    public String getCourseById(@RequestParam int id) {
+    @GetMapping("getCourseById/{id}")
+    public String getCourseById(@PathVariable int id) {
         return courses.getOrDefault(id, "Course not found");
     }
 
-    @PutMapping("updateCourse")
-    public String updateCourse(@RequestParam int id, @RequestParam String courseName) {
+    @PutMapping("updateCourse/{id}&{courseName}")
+    public String updateCourse(@PathVariable int id, @PathVariable String courseName) {
         if(courses.containsKey(id)){
             courses.put(id, courseName);
             return "Course ID " + id + " updated to " + courseName;
