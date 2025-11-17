@@ -51,23 +51,23 @@ public class HelloController {
     }
 
     // Course Endpoints
-    @PostMapping("createCourse")
+    @PostMapping("/courses")
     public String createCourse(@RequestParam String courseName) {
          courses.put(idCounter, courseName);
         return "Course " + courseName + " created successfully with ID " + idCounter++;
     }
 
-    @GetMapping("getAllCourses")
+    @GetMapping("/courses")
     public Map<Integer, String> getAllCourses(){
          return courses;
     }
 
-    @GetMapping("getCourseById/{id}")
+    @GetMapping("/courses/{id}")
     public String getCourseById(@PathVariable int id) {
         return courses.getOrDefault(id, "Course not found");
     }
 
-    @PutMapping("updateCourse/{id}&{courseName}")
+    @PutMapping("/courses/{id}&{courseName}")
     public String updateCourse(@PathVariable int id, @PathVariable String courseName) {
         if(courses.containsKey(id)){
             courses.put(id, courseName);
@@ -77,7 +77,7 @@ public class HelloController {
         }
     }
 
-    @DeleteMapping("deleteCourse/{id}")
+    @DeleteMapping("/courses/{id}")
     public String deleteCourse(@PathVariable int id) {
         boolean removed = courses.remove(id) != null;
         if(removed){
