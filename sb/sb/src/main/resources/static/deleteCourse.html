@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Course</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f3f4f6; padding: 20px; }
+        h1 { margin-bottom: 10px; }
+        form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); max-width: 400px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input[type="number"] { width: 100%; padding: 8px; margin-bottom: 16px; border: 1px solid #ccc; border-radius: 6px; }
+        button { background: #ef4444; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; margin-right: 10px; }
+        button:hover { background: #b91c1c; }
+        #response { margin-top: 10px; font-size: 16px; color: #7f1d1d; background: #fee2e2; padding: 10px; border-radius: 6px; display: none; }
+    </style>
+</head>
+<body>
+<h1>Delete a Course</h1>
+<form id="deleteForm">
+    <label for="courseId">Course ID to delete:</label>
+    <input type="number" id="courseId" name="courseId" required />
+
+    <button type="submit">Delete Course</button>
+    <button type="button" onclick="refreshForm()">🔄 Refresh</button>
+    <div id="response"></div>
+</form>
+
+<script>
+    const form = document.getElementById("deleteForm");
+    const responseBox = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("courseId").value;
+
+      try {
+        // Use path variable style to match backend
+        const res = await fetch(`http://localhost:8080/deleteCourse/${id}`, {
+          method: "DELETE"
+        });
+
+        const text = await res.text();
+        responseBox.textContent = text;
+        responseBox.style.display = "block";
+      } catch (err) {
+        responseBox.textContent = "Error deleting course: " + err;
+        responseBox.style.display = "block";
+      }
+    });
+
+    function refreshForm() {
+      form.reset();
+      responseBox.style.display = "none";
+    }
+</script>
+</body>
+</html>

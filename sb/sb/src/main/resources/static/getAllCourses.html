@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #f3f4f6;
+          padding: 20px;
+        }
+        h1 {
+          margin-bottom: 10px;
+        }
+        form {
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+          max-width: 400px;
+          margin-bottom: 20px;
+        }
+        label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: bold;
+        }
+        input[type="text"] {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 16px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+        }
+        button {
+          background: #2563eb;
+          color: white;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 6px;
+          cursor: pointer;
+          margin-right: 10px;
+        }
+        button:hover {
+          background: #1e40af;
+        }
+        #response {
+          margin-top: 10px;
+          font-size: 16px;
+          color: #065f46;
+          background: #d1fae5;
+          padding: 10px;
+          border-radius: 6px;
+          display: none;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          background: white;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        th, td {
+          padding: 10px;
+          border-bottom: 1px solid #e5e7eb;
+          text-align: left;
+        }
+        th {
+          background: #f3f4f6;
+          font-weight: bold;
+        }
+        tr:nth-child(even) {
+          background: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+<h1>Course Manager</h1>
+
+<form id="courseForm">
+    <label for="cname">Course Name:</label>
+    <input type="text" id="cname" name="cname" required />
+    <button type="submit">Create Course</button>
+    <button type="button" onclick="refreshCourses()">🔄 Refresh List</button>
+    <div id="response"></div>
+</form>
+
+<table id="courseTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Created Date</th>
+        <th>Updated Date</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    const form = document.getElementById("courseForm");
+    const responseBox = document.getElementById("response");
+    const tableBody = document.querySelector("#courseTable tbody");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const cname = document.getElementById("cname").value;
+
+      const course = {
+        cname: cname
+      };
+
+      try {
+        const res = await fetch("http://localhost:8080/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(course)
+        });
+
+        const text = await res.text();
+        responseBox.textContent = text;
+        responseBox.style.display = "block";
+        form.reset();
+        refreshCourses();
+      } catch (err) {
+        responseBox.textContent = "Error creating course: " + err;
+        responseBox.style.display = "block";
+      }
+    });
+
+    async function refreshCourses() {
+      try {
+        const res = await fetch("http://localhost:8080/getAll");
+        const data = await res.json();
+
+        tableBody.innerHTML = "";
+
+        data.forEach(course => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${course.cid}</td>
+            <td>${course.cname ?? "—"}</td>
+            <td>${formatDate(course.createdDate)}</td>
+            <td>${formatDate(course.updatedDate)}</td>
+            <td>${course.isActive ? "Active" : "Inactive"}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (err) {
+        tableBody.innerHTML = `<tr><td colspan="5">Failed to load courses: ${err}</td></tr>`;
+      }
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      return isNaN(d) ? "—" : d.toLocaleString();
+    }
+
+    // Load courses on page load
+    refreshCourses();
+</script>
+</body>
+</html>

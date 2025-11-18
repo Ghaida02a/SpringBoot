@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Course By Id</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f3f4f6; padding: 20px; }
+        h1 { margin-bottom: 10px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); max-width: 500px; margin-top: 20px; }
+        .field { margin-bottom: 12px; }
+        .label { font-weight: bold; color: #374151; }
+        .value { color: #111827; }
+        .status { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 13px; color: white; background: #22c55e; }
+        .status.inactive { background: #ef4444; }
+        input, button { padding: 8px; margin-top: 10px; border-radius: 6px; border: 1px solid #ccc; }
+        button { background: #2563eb; color: white; cursor: pointer; }
+        button:hover { background: #1e40af; }
+    </style>
+</head>
+<body>
+<h1>Course Details</h1>
+
+<label for="courseInput">Enter Course ID:</label>
+<input type="number" id="courseInput" placeholder="e.g. 1" />
+<button onclick="loadCourse()">🔍 Load Course</button>
+
+<div class="card" id="courseCard" style="display:none;">
+    <div class="field"><span class="label">ID:</span> <span class="value" id="courseId">—</span></div>
+    <div class="field"><span class="label">Name:</span> <span class="value" id="courseName">—</span></div>
+    <div class="field"><span class="label">Created:</span> <span class="value" id="createdDate">—</span></div>
+    <div class="field"><span class="label">Updated:</span> <span class="value" id="updatedDate">—</span></div>
+    <div class="field"><span class="label">Status:</span> <span class="status" id="status">—</span></div>
+</div>
+
+<script>
+    async function loadCourse() {
+      const id = document.getElementById("courseInput").value;
+      if (!id) {
+        alert("Please enter a course ID.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:8080/getCourseById/${id}`);
+        const course = await res.json();
+
+        document.getElementById("courseCard").style.display = "block";
+        document.getElementById("courseId").textContent = course.id ?? "—";
+        document.getElementById("courseName").textContent = course.name ?? "—";
+        document.getElementById("createdDate").textContent = formatDate(course.createdDate);
+        document.getElementById("updatedDate").textContent = formatDate(course.updatedDate);
+
+        const statusEl = document.getElementById("status");
+        statusEl.textContent = course.isActive ? "Active" : "Inactive";
+        statusEl.className = "status" + (course.isActive ? "" : " inactive");
+      } catch (err) {
+        alert("Failed to load course: " + err);
+      }
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      return isNaN(d) ? "—" : d.toLocaleString();
+    }
+</script>
+</body>
+</html>
