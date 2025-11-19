@@ -119,6 +119,9 @@
         <label for="courseName">New Course Name:</label>
         <input type="text" id="courseName" name="courseName" required />
 
+        <label for="courseHours">New Course Hours:</label>
+        <input type="number" id="courseHours" name="courseHours" step="0.5" required />
+
         <button type="submit">Update Course</button>
         <button type="button" onclick="refreshForm()">🔄 Refresh</button>
         <div id="response"></div>
@@ -133,10 +136,12 @@
       e.preventDefault();
       const id = document.getElementById("courseId").value;
       const name = document.getElementById("courseName").value;
+      const hours = parseFloat(document.getElementById("courseHours").value);
 
       const course = {
         id: parseInt(id),
-        name: name
+        name: name,
+        hours: hours
       };
 
       try {

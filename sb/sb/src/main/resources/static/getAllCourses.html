@@ -31,7 +31,6 @@
         tr:nth-child(even) {
           background: #f9fafb;
         }
-         /* ✅ Menu bar */
         nav {
           width: 100%;
           background: #BC8F8F;
@@ -55,11 +54,11 @@
 <body>
 <!-- Menu -->
 <nav>
-    <a href="http://localhost:63342/sb/static/createCourse.html?_ijt=16pqlu1qh72gt6ba1ae4qeaj1k&_ij_reload=RELOAD_ON_SAVE">➕ Add Course</a>
-    <a href="http://localhost:63342/sb/static/updateCourse.html?_ijt=5922k9tbkfe9f1i3h7lhi973a&_ij_reload=RELOAD_ON_SAVE">✏️ Update Course</a>
-    <a href="http://localhost:63342/sb/static/getCourseById.html?_ijt=mhg3cenojnk96mrkqduh5o4585&_ij_reload=RELOAD_ON_SAVE">🔍 Get Course By ID</a>
-    <a href="http://localhost:63342/sb/static/deleteCourse.html?_ijt=5922k9tbkfe9f1i3h7lhi973a&_ij_reload=RELOAD_ON_SAVE">🗑️ Delete Course</a>
-    <a href="http://localhost:63342/sb/static/getAllCourses.html?_ijt=16pqlu1qh72gt6ba1ae4qeaj1k&_ij_reload=RELOAD_ON_SAVE">📋 View All Courses</a>
+    <a href="createCourse.html">➕ Add Course</a>
+    <a href="updateCourse.html">✏️ Update Course</a>
+    <a href="getCourseById.html">🔍 Get Course By ID</a>
+    <a href="deleteCourse.html">🗑️ Delete Course</a>
+    <a href="getAllCourses.html">📋 View All Courses</a>
 </nav>
 
 <h1>All Courses</h1>
@@ -68,6 +67,7 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Hours</th> <!-- ✅ Added Hours column -->
         <th>Created Date</th>
         <th>Updated Date</th>
         <th>Status</th>
@@ -91,6 +91,7 @@
           row.innerHTML = `
             <td>${course.id}</td>
             <td>${course.name ?? "—"}</td>
+            <td>${course.hours ?? "—"}</td> <!-- ✅ Show hours -->
             <td>${formatDate(course.createdDate)}</td>
             <td>${formatDate(course.updatedDate)}</td>
             <td>${course.isActive ? "Active" : "Inactive"}</td>
@@ -98,7 +99,7 @@
           tableBody.appendChild(row);
         });
       } catch (err) {
-        tableBody.innerHTML = `<tr><td colspan="5">Failed to load courses: ${err}</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="6">Failed to load courses: ${err}</td></tr>`;
       }
     }
 

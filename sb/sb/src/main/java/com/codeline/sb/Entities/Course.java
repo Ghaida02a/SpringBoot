@@ -14,6 +14,7 @@ import java.util.Date;
 public class Course {
     int id;
     String name;
+    Double hours;
     Date createdDate;
     Date updatedDate;
     Boolean isActive;

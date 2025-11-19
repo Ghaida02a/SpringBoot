@@ -135,6 +135,7 @@
     <div class="card" id="courseCard" style="display:none;">
         <div class="field"><span class="label">ID:</span> <span class="value" id="courseId">—</span></div>
         <div class="field"><span class="label">Name:</span> <span class="value" id="courseName">—</span></div>
+        <div class="field"><span class="label">Hours:</span> <span class="value" id="courseHours">—</span></div> <!-- ✅ Added Hours -->
         <div class="field"><span class="label">Created:</span> <span class="value" id="createdDate">—</span></div>
         <div class="field"><span class="label">Updated:</span> <span class="value" id="updatedDate">—</span></div>
         <div class="field"><span class="label">Status:</span> <span class="status" id="status">—</span></div>
@@ -156,6 +157,7 @@
         document.getElementById("courseCard").style.display = "block";
         document.getElementById("courseId").textContent = course.id ?? "—";
         document.getElementById("courseName").textContent = course.name ?? "—";
+        document.getElementById("courseHours").textContent = course.hours ?? "—"; // ✅ Show hours
         document.getElementById("createdDate").textContent = formatDate(course.createdDate);
         document.getElementById("updatedDate").textContent = formatDate(course.updatedDate);
 

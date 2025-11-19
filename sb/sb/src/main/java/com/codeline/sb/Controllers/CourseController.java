@@ -60,6 +60,7 @@ public class CourseController {
 
             //set updates for the new obj
             existingCourse.setName(updateCourse.getName());
+            existingCourse.setHours(updateCourse.getHours());
             existingCourse.setUpdatedDate(new Date());
 
             //save it to course list
