@@ -2,36 +2,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Get Course By Id</title>
+    <title>Search Course</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: Arial, sans-serif; background: #f3f4f6; padding: 20px; }
-        h1 { margin-bottom: 10px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); max-width: 500px; margin-top: 20px; }
-        .field { margin-bottom: 12px; }
-        .label { font-weight: bold; color: #374151; }
-        .value { color: #111827; }
-        .status { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 13px; color: white; background: #22c55e; }
-        .status.inactive { background: #ef4444; }
-        input, button { padding: 8px; margin-top: 10px; border-radius: 6px; border: 1px solid #ccc; }
-        button { background: #2563eb; color: white; cursor: pointer; }
-        button:hover { background: #1e40af; }
+        body {
+          font-family: Arial, sans-serif;
+          background: #f3f4f6;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-height: 100vh;
+        }
+
+        nav {
+          width: 100%;
+          background: #BC8F8F;
+          padding: 10px;
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+        }
+
+        nav a {
+          color: #fff;
+          text-decoration: none;
+          font-weight: bold;
+          padding: 6px 12px;
+          border-radius: 4px;
+        }
+
+        nav a:hover {
+          background: #A52A2A;
+        }
+
+        main {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+        }
+
+        h1 {
+          margin: 20px 0 10px;
+          text-align: center;
+        }
+
+        label {
+          font-weight: bold;
+          margin-top: 10px;
+        }
+
+        input {
+          padding: 8px;
+          margin-top: 10px;
+          border-radius: 6px;
+          border: 1px solid #ccc;
+          width: 200px;
+        }
+
+        button {
+          padding: 8px 12px;
+          margin-top: 10px;
+          border-radius: 6px;
+          border: 1px solid #ccc;
+          background: #BC8F8F;
+          color: #A52A2A;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background: #1e40af;
+          color: white;
+        }
+
+        .card {
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+          max-width: 500px;
+          width: 100%;
+          margin-top: 20px;
+        }
+
+        .field {
+          margin-bottom: 12px;
+        }
+
+        .label {
+          font-weight: bold;
+          color: #374151;
+        }
+
+        .value {
+          color: #111827;
+        }
+
+        .status {
+          display: inline-block;
+          padding: 4px 10px;
+          border-radius: 12px;
+          font-size: 13px;
+          color: white;
+          background: #22c55e;
+        }
+
+        .status.inactive {
+          background: #ef4444;
+        }
     </style>
 </head>
 <body>
-<h1>Course Details</h1>
+<!-- ✅ Menu pinned to top -->
+<nav>
+    <a href="createCourse.html">➕ Add Course</a>
+    <a href="updateCourse.html">✏️ Update Course</a>
+    <a href="getCourseById.html">🔍 Get Course By ID</a>
+    <a href="deleteCourse.html">🗑️ Delete Course</a>
+    <a href="getAllCourses.html">📋 View All Courses</a>
+</nav>
 
-<label for="courseInput">Enter Course ID:</label>
-<input type="number" id="courseInput" placeholder="e.g. 1" />
-<button onclick="loadCourse()">🔍 Load Course</button>
+<main>
+    <h1>Course Details</h1>
 
-<div class="card" id="courseCard" style="display:none;">
-    <div class="field"><span class="label">ID:</span> <span class="value" id="courseId">—</span></div>
-    <div class="field"><span class="label">Name:</span> <span class="value" id="courseName">—</span></div>
-    <div class="field"><span class="label">Created:</span> <span class="value" id="createdDate">—</span></div>
-    <div class="field"><span class="label">Updated:</span> <span class="value" id="updatedDate">—</span></div>
-    <div class="field"><span class="label">Status:</span> <span class="status" id="status">—</span></div>
-</div>
+    <label for="courseInput">Enter Course ID:</label>
+    <input type="number" id="courseInput" placeholder="e.g. 1" />
+    <button onclick="loadCourse()">🔍 Load Course</button>
+
+    <div class="card" id="courseCard" style="display:none;">
+        <div class="field"><span class="label">ID:</span> <span class="value" id="courseId">—</span></div>
+        <div class="field"><span class="label">Name:</span> <span class="value" id="courseName">—</span></div>
+        <div class="field"><span class="label">Created:</span> <span class="value" id="createdDate">—</span></div>
+        <div class="field"><span class="label">Updated:</span> <span class="value" id="updatedDate">—</span></div>
+        <div class="field"><span class="label">Status:</span> <span class="status" id="status">—</span></div>
+    </div>
+</main>
 
 <script>
     async function loadCourse() {

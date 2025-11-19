@@ -8,10 +8,34 @@
         body {
           font-family: Arial, sans-serif;
           background: #f3f4f6;
-          padding: 20px;
+          margin: 0;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        /* ✅ Menu bar */
+        nav {
+          width: 100%;
+          background: #BC8F8F;
+          padding: 10px;
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+        }
+        nav a {
+          color: #fff;
+          text-decoration: none;
+          font-weight: bold;
+          padding: 6px 12px;
+          border-radius: 4px;
+        }
+        nav a:hover {
+          background: #A52A2A;
         }
         h1 {
-          margin-bottom: 10px;
+          margin: 20px 0 10px;
+          text-align: center;
         }
         form {
           background: white;
@@ -19,6 +43,7 @@
           border-radius: 8px;
           box-shadow: 0 2px 6px rgba(0,0,0,0.1);
           max-width: 400px;
+          width: 100%;
         }
         label {
           display: block;
@@ -33,21 +58,23 @@
           border-radius: 6px;
         }
         button {
-          background: #2563eb;
-          color: white;
+          background: #BC8F8F;
+          color: #A52A2A;
           border: none;
           padding: 10px 16px;
           border-radius: 6px;
           cursor: pointer;
+          margin-right: 8px;
         }
         button:hover {
           background: #1e40af;
+          color: white;
         }
         #response {
           margin-top: 20px;
           font-size: 16px;
-          color: #065f46;
-          background: #d1fae5;
+          color: black;
+          background: #FEF2F2;
           padding: 10px;
           border-radius: 6px;
           display: none;
@@ -55,7 +82,16 @@
     </style>
 </head>
 <body>
-<h1>Create a Course</h1>
+<!-- Menu -->
+<nav>
+    <a href="http://localhost:63342/sb/static/createCourse.html?_ijt=16pqlu1qh72gt6ba1ae4qeaj1k&_ij_reload=RELOAD_ON_SAVE">➕ Add Course</a>
+    <a href="http://localhost:63342/sb/static/updateCourse.html?_ijt=5922k9tbkfe9f1i3h7lhi973a&_ij_reload=RELOAD_ON_SAVE">✏️ Update Course</a>
+    <a href="http://localhost:63342/sb/static/getCourseById.html?_ijt=mhg3cenojnk96mrkqduh5o4585&_ij_reload=RELOAD_ON_SAVE">🔍 Get Course By ID</a>
+    <a href="http://localhost:63342/sb/static/deleteCourse.html?_ijt=5922k9tbkfe9f1i3h7lhi973a&_ij_reload=RELOAD_ON_SAVE">🗑️ Delete Course</a>
+    <a href="http://localhost:63342/sb/static/getAllCourses.html?_ijt=16pqlu1qh72gt6ba1ae4qeaj1k&_ij_reload=RELOAD_ON_SAVE">📋 View All Courses</a>
+</nav>
+
+<h1>Add a Course</h1>
 <form id="courseForm">
     <label for="name">Course Name:</label>
     <input type="text" id="name" name="name" required />
@@ -73,9 +109,7 @@
       e.preventDefault();
       const name = document.getElementById("name").value;
 
-      const course = {
-        name: name
-      };
+      const course = { name: name };
 
       try {
         const res = await fetch("http://localhost:8080/create", {
@@ -94,7 +128,7 @@
     });
 
     function refreshForm() {
-      document.getElementById("name").value = "";
+      form.reset();
       responseBox.style.display = "none";
     }
 </script>
