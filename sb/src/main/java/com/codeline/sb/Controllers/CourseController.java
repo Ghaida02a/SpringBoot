@@ -59,39 +59,17 @@ public class CourseController {
         return courseService.getCourseById(id);
     }
 
-    //update course by id
+    //update course
     @PutMapping("updateCourse")
-    public Course updateCourse(@RequestBody Course updateCourse) throws Exception{
-//        if (checkIfIdExists(updateCourse.getId()).getId() != -1) {
-//
-//            Course existingCourse = checkIfIdExists(updateCourse.getId());
-//
-//            //to update, remove the existing obj from list
-//            courseList.remove(existingCourse);
-//
-//            //set updates for the new obj
-//            existingCourse.setName(updateCourse.getName());
-//            existingCourse.setHours(updateCourse.getHours());
-//            existingCourse.setUpdatedDate(new Date());
-//
-//            //save it to course list
-//            courseList.add(existingCourse);
-//            return "Course updated successfully!";
-//        }
-//        return "Course not found";
-        return courseService.updateCourse(updateCourse);
+    public String updateCourse(@RequestBody Course updateObjFromUser) throws Exception {
+        return courseService.updateCourse(updateObjFromUser);
     }
 
     //delete course by id
     @DeleteMapping("deleteCourse/{id}")
-    public String deleteCourse(@PathVariable int id){
-//        if (checkIfIdExists(id).getId() != -1) {
-//            Course existingCourse = checkIfIdExists(id);
-//            existingCourse.setIsActive(false);
-//            return "Course deleted successfully!";
-//        }
-//    return "Course not found";
-        return courseService.deleteCourse(id);
+    public String deleteCourse(@PathVariable int id) throws Exception {
+        courseService.deleteCourse(id);
+        return "SUCCESS";
     }
 
 //    public Course checkIfIdExists(int id){

@@ -28,26 +28,27 @@ public class CourseService {
         return courseRepository.findById(id).get();
     }
 
-    public Course updateCourse(Course course) throws Exception {
-        Course courseToUpdate = courseRepository.findById(course.getId()).get();
+    public String updateCourse(Course course) throws Exception {
+        Course existingCourse = courseRepository.findById(course.getId()).get();
 
-        if (courseToUpdate != null && courseToUpdate.getIsActive()) {
-            courseToUpdate.setUpdatedDate(new Date());
-            return courseRepository.save(courseToUpdate);
+        if (existingCourse != null && existingCourse.getIsActive()) {
+            course.setUpdatedDate(new Date());
+            course.setIsActive(Boolean.TRUE);
+            courseRepository.save(course);
+            return "Course updated successfully";
         } else {
-            throw new Exception("Course not found");
+            throw new Exception("BAD REQUEST");
         }
     }
 
-    public String deleteCourse(int id) {
-        Course courseToDelete = courseRepository.findById(id).get();
-
-        if (courseToDelete != null && courseToDelete.getIsActive()) {
-            courseToDelete.setIsActive(Boolean.FALSE);
-            courseRepository.save(courseToDelete);
-            return "Course deleted successfully";
+    public void deleteCourse(Integer id) throws Exception {
+        Course existingCourse = courseRepository.findById(id).get();
+        if (existingCourse != null && existingCourse.getIsActive()) {
+            existingCourse.setUpdatedDate(new Date());
+            existingCourse.setIsActive(Boolean.FALSE);
+            courseRepository.save(existingCourse);
         } else {
-            return "Course not found";
+            throw new Exception("BAD REQUEST");
         }
     }
 }
