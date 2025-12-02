@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Instructor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+    <a href="createInstructor.html">➕ Add Instructor</a>
+    <a href="updateInstructor.html">✏️ Update Instructor</a>
+    <a href="getInstructorById.html">🔍 Get Instructor By ID</a>
+    <a href="deleteInstructor.html">🗑️ Delete Instructor</a>
+    <a href="getAllInstructors.html">📋 View All Instructors</a>
+</nav>
+<h1>Delete Instructor</h1>
+<input type="number" id="deleteId" placeholder="Enter ID">
+<button onclick="deleteInstructor()">🗑️ Delete</button>
+<div id="response"></div>
+
+<script>
+    async function deleteInstructor() {
+      const id = deleteId.value;
+      const res = await fetch(`http://localhost:8080/deleteInstructor/${id}`, {
+        method: "DELETE"
+      });
+      response.textContent = await res.text();
+    }
+</script>
+</body>
+</html>

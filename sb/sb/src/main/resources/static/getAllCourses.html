@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>View Courses</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Course</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Menu -->
+<nav>
+    <a href="createCourse.html">➕ Add Course</a>
+    <a href="updateCourse.html">✏️ Update Course</a>
+    <a href="getCourseById.html">🔍 Get Course By ID</a>
+    <a href="deleteCourse.html">🗑️ Delete Course</a>
+    <a href="getAllCourses.html">📋 View All Courses</a>
+</nav>
+
+<h1>All Courses</h1>
+<table id="courseTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Hours</th> <!-- ✅ Added Hours column -->
+        <th>Created Date</th>
+        <th>Updated Date</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    const tableBody = document.querySelector("#courseTable tbody");
+
+    async function refreshCourses() {
+      try {
+        const res = await fetch("http://localhost:8080/getAllCourses");
+        const data = await res.json();
+
+        tableBody.innerHTML = "";
+
+        data.forEach(course => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${course.id}</td>
+            <td>${course.name ?? "—"}</td>
+            <td>${course.hours ?? "—"}</td> <!-- ✅ Show hours -->
+            <td>${formatDate(course.createdDate)}</td>
+            <td>${formatDate(course.updatedDate)}</td>
+            <td>${course.isActive ? "Active" : "Inactive"}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (err) {
+        tableBody.innerHTML = `<tr><td colspan="6">Failed to load courses: ${err}</td></tr>`;
+      }
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      return isNaN(d) ? "—" : d.toLocaleString();
+    }
+
+    // Load courses on page load
+    refreshCourses();
+</script>
+</body>
+</html>

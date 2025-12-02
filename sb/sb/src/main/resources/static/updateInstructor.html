@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Instructor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+    <a href="createInstructor.html">➕ Add Instructor</a>
+    <a href="updateInstructor.html">✏️ Update Instructor</a>
+    <a href="getInstructorById.html">🔍 Get Instructor By ID</a>
+    <a href="deleteInstructor.html">🗑️ Delete Instructor</a>
+    <a href="getAllInstructors.html">📋 View All Instructors</a>
+</nav>
+<h1>Update Instructor</h1>
+<form id="updateForm">
+    <label>ID:</label><input type="number" id="id" required>
+    <label>Name:</label><input type="text" id="name">
+    <label>Email:</label><input type="email" id="email">
+    <label>Phone:</label><input type="text" id="phoneNumber">
+    <label>Designation:</label><input type="text" id="designation">
+    <button type="submit">✏️ Update</button>
+</form>
+<div id="response"></div>
+
+<script>
+    document.getElementById("updateForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const instructor = {
+        id: parseInt(id.value),
+        name: name.value,
+        email: email.value,
+        phoneNumber: phoneNumber.value,
+        designation: designation.value
+      };
+      const res = await fetch("http://localhost:8080/updateInstructor", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(instructor)
+      });
+      response.textContent = await res.text();
+    });
+</script>
+</body>
+</html>
