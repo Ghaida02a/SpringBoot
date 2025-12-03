@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Department</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createDepartment.html">➕ Add Department</a>
+    <a href="updateDepartment.html">✏️ Update Department</a>
+    <a href="getDepartmentById.html">🔍 Get Department By ID</a>
+    <a href="deleteDepartment.html">🗑️ Delete Department</a>
+    <a href="getAllDepartments.html">📋 View All Departments</a>
+</nav>
+
+<h1>Create Department</h1>
+<form id="createDepartmentForm">
+    <label for="name">Department Name</label>
+    <input type="text" id="name" name="name" required>
+    <button type="submit">Create</button>
+    <button type="button" onclick="refreshForm()">🔄 Refresh</button>
+</form>
+
+<div id="response"></div>
+
+<script>
+    document.getElementById("createDepartmentForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const department = { name: document.getElementById("name").value };
+      const res = await fetch("http://localhost:8080/createDepartment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(department)
+      });
+      const text = await res.text();
+      const responseDiv = document.getElementById("response");
+      responseDiv.style.display = "block";
+      responseDiv.textContent = text;
+    });
+</script>
+</body>
+</html>

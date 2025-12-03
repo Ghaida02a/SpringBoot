@@ -1,13 +1,13 @@
 package com.codeline.sb.services;
 
+import com.codeline.sb.DTO.DepartmentRequested;
 import com.codeline.sb.Entities.Department;
-import com.codeline.sb.Entities.Instructor;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.repositories.DepartmentRepository;
-import com.codeline.sb.repositories.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,14 +17,26 @@ public class DepartmentService {
     @Autowired
     DepartmentRepository departmentRepository;
 
-    public Department saveDepartment(Department department) {
+    public Department saveDepartment(DepartmentRequested departmentDTO) {
+        Department department = DepartmentRequested.convertDTOToEntity(departmentDTO);
         department.setCreatedDate(new Date());
         department.setIsActive(Boolean.TRUE);
         return departmentRepository.save(department);
     }
 
     public List<Department> getAllDepartments() {
-        return departmentRepository.findAll();
+        List<Department> activeDepartments = new ArrayList<>();
+        if (!departmentRepository.findAll().isEmpty()) {
+            for (Department department : departmentRepository.findAll()) {
+                if (Boolean.TRUE.equals(department.getIsActive())) {
+                    activeDepartments.add(department);
+                }
+            }
+        }
+        else {
+            System.out.println(Constants.No_Data_Found);
+        }
+        return activeDepartments;
     }
 
     public Department getDepartmentById(int id) {
@@ -35,8 +47,12 @@ public class DepartmentService {
         Department existingDepartment = departmentRepository.findById(department.getId()).get();
 
         if (existingDepartment != null && existingDepartment.getIsActive()) {
-            department.setUpdatedDate(new Date());
-            department.setIsActive(Boolean.TRUE);
+
+            existingDepartment.setName(department.getName());
+            existingDepartment.setUpdatedDate(new Date());
+            existingDepartment.setIsActive(Boolean.TRUE);
+//            department.setUpdatedDate(new Date());
+//            department.setIsActive(Boolean.TRUE);
             departmentRepository.save(department);
             return Constants.Success;
         } else {

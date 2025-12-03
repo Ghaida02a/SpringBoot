@@ -12,6 +12,7 @@
 <body>
 <!-- Menu -->
 <nav>
+    <a href="index.html">🏠 Home</a>
     <a href="createCourse.html">➕ Add Course</a>
     <a href="updateCourse.html">✏️ Update Course</a>
     <a href="getCourseById.html">🔍 Get Course By ID</a>
@@ -39,8 +40,11 @@
 
     async function refreshCourses() {
       try {
-        const res = await fetch("http://localhost:8080/getAllCourses");
-        const data = await res.json();
+<!--        const res = await fetch("http://localhost:8080/getAllCourses");-->
+<!--        const data = await res.json();-->
+// For getAllCourses
+const res = await fetch("http://localhost:8080/getAllCourses");
+const courses = await res.json(); // ✅ returns array
 
         tableBody.innerHTML = "";
 

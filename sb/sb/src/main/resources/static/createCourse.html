@@ -8,6 +8,7 @@
 </head>
 <body>
 <nav>
+    <a href="index.html">🏠 Home</a>
     <a href="createCourse.html">➕ Add Course</a>
     <a href="updateCourse.html">✏️ Update Course</a>
     <a href="getCourseById.html">🔍 Get Course By ID</a>
@@ -50,8 +51,12 @@
           body: JSON.stringify(course)
         });
 
-        const text = await res.text();
-        responseBox.textContent = text;
+<!--        const text = await res.text();-->
+<!--        responseBox.textContent = text;-->
+            const text = await res.text();
+            responseBox.textContent = text;
+            responseBox.className = res.ok ? "success" : "error";
+
         responseBox.style.display = "block";
       } catch (err) {
         responseBox.textContent = "Error creating course: " + err;

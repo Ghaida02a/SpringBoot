@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Departments</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createDepartment.html">➕ Add Department</a>
+    <a href="updateDepartment.html">✏️ Update Department</a>
+    <a href="getDepartmentById.html">🔍 Get Department By ID</a>
+    <a href="deleteDepartment.html">🗑️ Delete Department</a>
+    <a href="getAllDepartments.html">📋 View All Departments</a>
+</nav>
+<h1>All Departments</h1>
+<table id="departmentsTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Created Date</th>
+        <th>Updated Date</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div id="response"></div>
+
+<script>
+    async function loadDepartments() {
+      try {
+        const res = await fetch("http://localhost:8080/getAllDepartments");
+        const data = await res.json();
+        const tbody = document.querySelector("#departmentsTable tbody");
+        tbody.innerHTML = "";
+        data.forEach(dep => {
+          const row = `<tr>
+            <td>${dep.id}</td>
+            <td>${dep.name}</td>
+            <td>${dep.createdDate || ""}</td>
+            <td>${dep.updatedDate || ""}</td>
+            <td>${dep.isActive ? "Active" : "Inactive"}</td>
+          </tr>`;
+          tbody.innerHTML += row;
+        });
+      } catch (err) {
+        document.getElementById("response").style.display = "block";
+        document.getElementById("response").textContent = "Failed to load departments: " + err;
+      }
+    }
+    loadDepartments();
+</script>
+</body>
+</html>

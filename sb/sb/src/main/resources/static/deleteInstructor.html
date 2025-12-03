@@ -7,6 +7,7 @@
 </head>
 <body>
 <nav>
+    <a href="index.html">🏠 Home</a>
     <a href="createInstructor.html">➕ Add Instructor</a>
     <a href="updateInstructor.html">✏️ Update Instructor</a>
     <a href="getInstructorById.html">🔍 Get Instructor By ID</a>
@@ -16,6 +17,8 @@
 <h1>Delete Instructor</h1>
 <input type="number" id="deleteId" placeholder="Enter ID">
 <button onclick="deleteInstructor()">🗑️ Delete</button>
+<button type="button" onclick="refreshForm()">🔄 Refresh</button>
+
 <div id="response"></div>
 
 <script>

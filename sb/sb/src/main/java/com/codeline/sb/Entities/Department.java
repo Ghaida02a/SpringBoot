@@ -21,6 +21,6 @@ public class Department {
 
     String name;
     Date createdDate;
-    Date UpdatedDate;
+    Date updatedDate;
     Boolean isActive;
 }

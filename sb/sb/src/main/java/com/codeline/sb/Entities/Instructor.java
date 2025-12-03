@@ -1,10 +1,7 @@
 package com.codeline.sb.Entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -13,6 +10,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "course") // prevents recursion
 public class Instructor {
     @Id
             @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +20,7 @@ public class Instructor {
     String phoneNumber;
     String designation;
     Date createdDate;
-    Date UpdatedDate;
+    Date updatedDate;
     Boolean isActive;
 
 

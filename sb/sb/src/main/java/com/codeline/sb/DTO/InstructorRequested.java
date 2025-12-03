@@ -1,10 +1,8 @@
 package com.codeline.sb.DTO;
 
-import com.codeline.sb.Entities.Course;
-import com.codeline.sb.Entities.Department;
 import com.codeline.sb.Entities.Instructor;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,14 +21,16 @@ public class InstructorRequested {
     String email;
 
     @NotBlank
-    @Min(message = "Phone number must not be empty", value = 8)
+    @Size(min = 8, message = "Phone number must be at least 8 digits")
     String phoneNumber;
 
     @NotBlank(message = "Designation must not be empty")
     String designation;
 
-    private Department department;
-    private Course course;
+    //    private Department department;
+//    private Course course;
+    private Integer departmentId;
+    private Integer courseId;
 
     //convert DTO → Entity
     public static Instructor convertDTOToEntity(InstructorRequested dto) {

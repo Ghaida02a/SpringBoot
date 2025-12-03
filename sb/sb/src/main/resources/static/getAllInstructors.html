@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Course</title>
+    <title>View All Instructors</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <!-- Menu -->
 <nav>
+    <a href="index.html">🏠 Home</a>
     <a href="createInstructor.html">➕ Add Instructor</a>
     <a href="updateInstructor.html">✏️ Update Instructor</a>
     <a href="getInstructorById.html">🔍 Get Instructor By ID</a>
@@ -23,7 +24,8 @@
         <th>ID</th>
         <th>Name</th>
         <th>Email</th>
-        <th>Specialization</th>
+        <th>Designation</th>
+        <th>Phone Number</th>
         <th>Created Date</th>
         <th>Updated Date</th>
         <th>Status</th>
@@ -36,31 +38,35 @@
     const tableBody = document.querySelector("#instructorTable tbody");
 
     async function refreshInstructors() {
-      try {
-        const res = await fetch("http://localhost:8080/getAllInstructors");
-        const data = await res.json();
+  try {
+    const res = await fetch("http://localhost:8080/getAllInstructors");
+    const data = await res.json();
 
-        const instructors = Array.isArray(data) ? data : [];
+    // Ensure we always have an array
+    const instructors = Array.isArray(data) ? data : (data ? [data] : []);
 
-        tableBody.innerHTML = "";
+    tableBody.innerHTML = "";
 
-        instructors.forEach(instructor => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${instructor.id}</td>
-            <td>${instructor.name ?? "—"}</td>
-            <td>${instructor.email ?? "—"}</td>
-            <td>${instructor.specialization ?? "—"}</td>
-            <td>${formatDate(instructor.createdDate)}</td>
-            <td>${formatDate(instructor.updatedDate)}</td>
-            <td>${instructor.isActive ? "Active" : "Inactive"}</td>
-          `;
-          tableBody.appendChild(row);
-        });
-      } catch (err) {
-        tableBody.innerHTML = `<tr><td colspan="7">Failed to load instructors: ${err}</td></tr>`;
-      }
-    }
+    instructors.forEach(instructor => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+  <td>${instructor.id ?? "—"}</td>
+  <td>${instructor.name ?? "—"}</td>
+  <td>${instructor.email ?? "—"}</td>
+  <td>${instructor.designation ?? "—"}</td>
+  <td>${instructor.phoneNumber ?? "—"}</td>
+  <td>${formatDate(instructor.createdDate)}</td>
+  <td>${formatDate(instructor.updatedDate ?? instructor.UpdatedDate)}</td>
+  <td>${instructor.isActive ? "Active" : "Inactive"}</td>
+`;
+
+      tableBody.appendChild(row);
+    });
+  } catch (err) {
+    tableBody.innerHTML = `<tr><td colspan="8">Failed to load instructors: ${err}</td></tr>`;
+  }
+}
+
 
     function formatDate(iso) {
       if (!iso) return "—";

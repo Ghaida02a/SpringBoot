@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CourseRequested {
+    Integer id;
     @NotBlank(message = "Course name cannot be empty")
     String name;
 
@@ -25,6 +26,7 @@ public class CourseRequested {
             return null;
         }
         return Course.builder()
+                .id(dto.getId())
                 .name(dto.getName())
                 .hours(dto.getHours())
                 .build();
@@ -43,6 +45,7 @@ public class CourseRequested {
     public static CourseRequested convertEntityToDTO(Course entity) {
         if (entity == null) return null;
         return CourseRequested.builder()
+                .id(entity.getId())
                 .name(entity.getName())
                 .hours(entity.getHours())
                 .build();

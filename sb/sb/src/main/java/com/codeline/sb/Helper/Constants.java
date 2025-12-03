@@ -8,4 +8,5 @@ public class Constants {
     public final static String Not_Found = "Not Found";
     public final static String Not_Null = "Field cannot be null";
     public final static String List_Empty = "List is empty";
+    public final static String No_Data_Found = "No Data Found";
 }

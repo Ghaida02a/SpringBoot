@@ -1,5 +1,6 @@
 package com.codeline.sb.Controllers;
 
+import com.codeline.sb.DTO.DepartmentRequested;
 import com.codeline.sb.Entities.Department;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.services.DepartmentService;
@@ -15,7 +16,7 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     @PostMapping("/createDepartment")
-    public String createDepartment(@RequestBody Department requestObj){
+    public String createDepartment(@RequestBody DepartmentRequested requestObj){
         Department department = departmentService.saveDepartment(requestObj);
         return Constants.Success + "Department created with ID: " + department.getId();
     }

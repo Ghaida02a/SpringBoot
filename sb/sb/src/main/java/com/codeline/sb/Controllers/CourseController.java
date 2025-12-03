@@ -31,7 +31,7 @@ public class CourseController {
 
     //get course by id
     @GetMapping("getCourseById/{id}")
-    public Course getStudent(@PathVariable int id) {
+    public Course getStudent(@PathVariable int id) throws Exception{
         return courseService.getCourseById(id);
     }
 

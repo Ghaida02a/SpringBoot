@@ -1,47 +1,47 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Create Instructor</title>-->
-<!--    <link rel="stylesheet" href="Styles.css">-->
-<!--</head>-->
-<!--<body>-->
-<!--<nav>-->
-<!--    <a href="createInstructor.html">➕ Add Instructor</a>-->
-<!--    <a href="updateInstructor.html">✏️ Update Instructor</a>-->
-<!--    <a href="getInstructorById.html">🔍 Get Instructor By ID</a>-->
-<!--    <a href="deleteInstructor.html">🗑️ Delete Instructor</a>-->
-<!--    <a href="getAllInstructors.html">📋 View All Instructors</a>-->
-<!--</nav>-->
-<!--<h1>Create Instructor</h1>-->
-<!--<form id="createForm">-->
-<!--    <label>Name:</label><input type="text" id="name" required>-->
-<!--    <label>Email:</label><input type="email" id="email" required>-->
-<!--    <label>Phone:</label><input type="text" id="phoneNumber">-->
-<!--    <label>Designation:</label><input type="text" id="designation">-->
-<!--    <button type="submit">➕ Create</button>-->
-<!--</form>-->
-<!--<div id="response"></div>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Instructor</title>
+    <link rel="stylesheet" href="Styles.css">
+</head>
+<body>
+<nav>
+    <a href="createInstructor.html">➕ Add Instructor</a>
+    <a href="updateInstructor.html">✏️ Update Instructor</a>
+    <a href="getInstructorById.html">🔍 Get Instructor By ID</a>
+    <a href="deleteInstructor.html">🗑️ Delete Instructor</a>
+    <a href="getAllInstructors.html">📋 View All Instructors</a>
+</nav>
+<h1>Create Instructor</h1>
+<form id="createForm">
+    <label>Name:</label><input type="text" id="name" required>
+    <label>Email:</label><input type="email" id="email" required>
+    <label>Phone:</label><input type="text" id="phoneNumber">
+    <label>Designation:</label><input type="text" id="designation">
+    <button type="submit">➕ Create</button>
+</form>
+<div id="response"></div>
 
-<!--<script>-->
-<!--    document.getElementById("createForm").addEventListener("submit", async (e) => {-->
-<!--      e.preventDefault();-->
-<!--      const instructor = {-->
-<!--        name: name.value,-->
-<!--        email: email.value,-->
-<!--        phoneNumber: phoneNumber.value,-->
-<!--        designation: designation.value-->
-<!--      };-->
-<!--      const res = await fetch("http://localhost:8080/createInstructor", {-->
-<!--        method: "POST",-->
-<!--        headers: { "Content-Type": "application/json" },-->
-<!--        body: JSON.stringify(instructor)-->
-<!--      });-->
-<!--      response.textContent = await res.text();-->
-<!--    });-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
+<script>
+    document.getElementById("createForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const instructor = {
+        name: name.value,
+        email: email.value,
+        phoneNumber: phoneNumber.value,
+        designation: designation.value
+      };
+      const res = await fetch("http://localhost:8080/createInstructor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(instructor)
+      });
+      response.textContent = await res.text();
+    });
+</script>
+</body>
+</html>
 
 
 
@@ -136,118 +136,121 @@
 <!--</script>-->
 <!--</body>-->
 <!--</html>-->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Instructor</title>
-    <link rel="stylesheet" href="Styles.css">
-</head>
-<body>
-<nav>
-    <a href="createInstructor.html">➕ Add Instructor</a>
-    <a href="updateInstructor.html">✏️ Update Instructor</a>
-    <a href="getInstructorById.html">🔍 Get Instructor By ID</a>
-    <a href="deleteInstructor.html">🗑️ Delete Instructor</a>
-    <a href="getAllInstructors.html">📋 View All Instructors</a>
-</nav>
 
-<h1>Create Instructor</h1>
-<form id="createForm">
-    <label>Name:</label>
-    <input type="text" id="name" required>
 
-    <label>Email:</label>
-    <input type="email" id="email" required>
 
-    <label>Phone:</label>
-    <input type="text" id="phoneNumber">
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Create Instructor</title>-->
+<!--    <link rel="stylesheet" href="Styles.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<nav>-->
+<!--    <a href="index.html">🏠 Home</a>-->
+<!--    <a href="createInstructor.html">➕ Add Instructor</a>-->
+<!--    <a href="updateInstructor.html">✏️ Update Instructor</a>-->
+<!--    <a href="getInstructorById.html">🔍 Get Instructor By ID</a>-->
+<!--    <a href="deleteInstructor.html">🗑️ Delete Instructor</a>-->
+<!--    <a href="getAllInstructors.html">📋 View All Instructors</a>-->
+<!--</nav>-->
 
-    <label>Designation:</label>
-    <input type="text" id="designation">
+<!--<h1>Create Instructor</h1>-->
+<!--<form id="createForm">-->
+<!--    <label>Name:</label>-->
+<!--    <input type="text" id="name" required>-->
 
-    <label>Department:</label>
-    <select id="departmentSelect" required>
-        <option value="">-- Select Department --</option>
-    </select>
+<!--    <label>Email:</label>-->
+<!--    <input type="email" id="email" required>-->
 
-    <label>Course:</label>
-    <select id="courseSelect" required>
-        <option value="">-- Select Course --</option>
-    </select>
+<!--    <label>Phone:</label>-->
+<!--    <input type="text" id="phoneNumber">-->
 
-    <button type="submit">➕ Create</button>
-</form>
+<!--    <label>Designation:</label>-->
+<!--    <input type="text" id="designation">-->
 
-<div id="response"></div>
+<!--    <label>Department:</label>-->
+<!--    <select id="departmentSelect">-->
+<!--        <option value="">&#45;&#45; Select Department &#45;&#45;</option>-->
+<!--    </select>-->
 
-<script>
-    const departmentSelect = document.getElementById("departmentSelect");
-    const courseSelect = document.getElementById("courseSelect");
+<!--    <label>Course:</label>-->
+<!--    <select id="courseSelect">-->
+<!--        <option value="">&#45;&#45; Select Course &#45;&#45;</option>-->
+<!--    </select>-->
 
-    // Load departments
-    async function loadDepartments() {
-      try {
-        const res = await fetch("http://localhost:8080/getAllDepartments");
-        const departments = await res.json();
-        departments.forEach(dep => {
-          const option = document.createElement("option");
-          option.value = dep.id;
-          option.textContent = dep.name;
-          departmentSelect.appendChild(option);
-        });
-      } catch (err) {
-        console.error("Failed to load departments", err);
-      }
-    }
+<!--    <button type="submit">➕ Create</button>-->
+<!--    <button type="button" onclick="refreshForm()">🔄 Refresh</button>-->
 
-    // Load courses
-    async function loadCourses() {
-      try {
-        const res = await fetch("http://localhost:8080/getAllCourses");
-        const courses = await res.json();
-        courses.forEach(course => {
-          const option = document.createElement("option");
-          option.value = course.id;
-          option.textContent = course.name + " (" + course.hours + " hrs)";
-          courseSelect.appendChild(option);
-        });
-      } catch (err) {
-        console.error("Failed to load courses", err);
-      }
-    }
+<!--</form>-->
 
-    document.getElementById("createForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+<!--<div id="response"></div>-->
 
-      const instructor = {
-        name: name.value,
-        email: email.value,
-        phoneNumber: phoneNumber.value,
-        designation: designation.value,
-        department: {
-          id: departmentSelect.value
-        },
-        course: {
-          id: courseSelect.value
-        }
-      };
+<!--<script>-->
+<!--    const departmentSelect = document.getElementById("departmentSelect");-->
+<!--    const courseSelect = document.getElementById("courseSelect");-->
 
-      try {
-        const res = await fetch("http://localhost:8080/createInstructor", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(instructor)
-        });
-        response.textContent = await res.text();
-        document.getElementById("createForm").reset();
-      } catch (err) {
-        response.textContent = "Failed to create instructor: " + err;
-      }
-    });
+<!--    // Load departments-->
+<!--    async function loadDepartments() {-->
+<!--      try {-->
+<!--        const res = await fetch("http://localhost:8080/getAllDepartments");-->
+<!--        const departments = await res.json();-->
+<!--        departments.forEach(dep => {-->
+<!--          const option = document.createElement("option");-->
+<!--          option.value = dep.id;-->
+<!--          option.textContent = dep.name;-->
+<!--          departmentSelect.appendChild(option);-->
+<!--        });-->
+<!--      } catch (err) {-->
+<!--        console.error("Failed to load departments", err);-->
+<!--      }-->
+<!--    }-->
 
-    loadDepartments();
-    loadCourses();
-</script>
-</body>
-</html>
+<!--    // Load courses-->
+<!--    async function loadCourses() {-->
+<!--      try {-->
+<!--        const res = await fetch("http://localhost:8080/getAllCourses");-->
+<!--        const courses = await res.json();-->
+<!--        courses.forEach(course => {-->
+<!--          const option = document.createElement("option");-->
+<!--          option.value = course.id;-->
+<!--          option.textContent = course.name + " (" + course.hours + " hrs)";-->
+<!--          courseSelect.appendChild(option);-->
+<!--        });-->
+<!--      } catch (err) {-->
+<!--        console.error("Failed to load courses", err);-->
+<!--      }-->
+<!--    }-->
+
+<!--    document.getElementById("createForm").addEventListener("submit", async (e) => {-->
+<!--      e.preventDefault();-->
+
+<!--      const instructor = {-->
+<!--  name: name.value,-->
+<!--  email: email.value,-->
+<!--  phoneNumber: phoneNumber.value,-->
+<!--  designation: designation.value,-->
+<!--  departmentId: departmentSelect.value,-->
+<!--  courseId: courseSelect.value-->
+<!--};-->
+
+
+<!--      try {-->
+<!--        const res = await fetch("http://localhost:8080/createInstructor", {-->
+<!--          method: "POST",-->
+<!--          headers: { "Content-Type": "application/json" },-->
+<!--          body: JSON.stringify(instructor)-->
+<!--        });-->
+<!--        response.textContent = await res.text();-->
+<!--        document.getElementById("createForm").reset();-->
+<!--      } catch (err) {-->
+<!--        response.textContent = "Failed to create instructor: " + err;-->
+<!--      }-->
+<!--    });-->
+
+<!--    loadDepartments();-->
+<!--    loadCourses();-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
