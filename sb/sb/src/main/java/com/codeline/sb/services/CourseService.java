@@ -39,19 +39,20 @@ public class CourseService {
 
     // Get all active courses
     public List<Course> getAllCourses() {
-        List<Course> activeCourses = new ArrayList<>();
-        List<Course> allCourses = courseRepository.findAll();
-
-        if (!allCourses.isEmpty()) {
-            for (Course course : allCourses) {
-                if (Boolean.TRUE.equals(course.getIsActive())) {
-                    activeCourses.add(course);
-                }
-            }
-        } else {
-            System.out.println(Constants.No_Data_Found);
-        }
-        return activeCourses;
+//        List<Course> activeCourses = new ArrayList<>();
+//        List<Course> allCourses = courseRepository.findAll();
+//
+//        if (!allCourses.isEmpty()) {
+//            for (Course course : allCourses) {
+//                if (Boolean.TRUE.equals(course.getIsActive())) {
+//                    activeCourses.add(course);
+//                }
+//            }
+//        } else {
+//            System.out.println(Constants.No_Data_Found);
+//        }
+//        return activeCourses;
+        return courseRepository.findAllActiveCourses();
     }
 
     public CourseResponseDTO saveCourse(CourseCreateRequested courseRequested){
@@ -78,9 +79,9 @@ public class CourseService {
 
     //Get course by ID
     public Course getCourseById(int id) throws Exception {
-        Optional<Course> courseOpt = courseRepository.findById(id);
-        if (courseOpt.isPresent()) {
-            return courseOpt.get();
+        Course courseOpt = courseRepository.getCourseById(id);
+        if (Utils.isNotNull(courseOpt)) {
+            return courseOpt;
         } else {
             throw new Exception(Constants.Not_Found);
         }
@@ -112,18 +113,12 @@ public class CourseService {
 
     //Soft delete course
     public void deleteCourse(Integer id) throws Exception {
-        Optional<Course> existingOpt = courseRepository.findById(id);
+        Course existingOpt = courseRepository.getCourseById(id);
 
-        if (existingOpt.isPresent()) {
-            Course existingCourse = existingOpt.get();
-
-            if (Boolean.TRUE.equals(existingCourse.getIsActive())) {
-                existingCourse.setUpdatedDate(new Date());
-                existingCourse.setIsActive(Boolean.FALSE);
-                courseRepository.save(existingCourse);
-            } else {
-                throw new Exception(Constants.Bad_Request);
-            }
+        if (Utils.isNotNull(existingOpt)) {
+                existingOpt.setUpdatedDate(new Date());
+                existingOpt.setIsActive(Boolean.FALSE);
+                courseRepository.save(existingOpt);
         } else {
             throw new Exception(Constants.Not_Found);
         }

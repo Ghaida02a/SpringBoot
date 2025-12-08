@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -16,6 +17,9 @@ public class CourseResponseDTO {
     //private Integer id;
     private String name;
     private Double hours;
+    private Date CreatedDate;
+    private Date UpdatedDate;
+    private Boolean isActive;
 
     // Instructor summary (id + name only)
     private InstructorSummaryDTO instructor;
@@ -31,6 +35,9 @@ public class CourseResponseDTO {
         return CourseResponseDTO.builder()
                 .name(entity.getName())
                 .hours(entity.getHours())
+                .CreatedDate(entity.getCreatedDate())
+                .UpdatedDate(entity.getUpdatedDate())
+                .isActive(entity.getIsActive())
                 .instructor(entity.getInstructor() != null
                         ? InstructorSummaryDTO.builder()
                         .id(entity.getInstructor().getId())
@@ -46,6 +53,20 @@ public class CourseResponseDTO {
                                 .build())
                         .toList()
                         : null)
+                .build();
+    }
+
+    //convert Entity To DTO
+    public static CourseResponseDTO convertEntityToDTO(Course entity) {
+        if (entity == null) {
+            return null;
+        }
+        return CourseResponseDTO.builder()
+                .name(entity.getName())
+                .hours(entity.getHours())
+                .CreatedDate(entity.getCreatedDate())
+                .UpdatedDate(entity.getUpdatedDate())
+                .isActive(entity.getIsActive())
                 .build();
     }
 }

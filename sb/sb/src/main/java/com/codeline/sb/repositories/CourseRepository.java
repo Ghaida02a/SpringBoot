@@ -13,4 +13,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     @Query("SELECT c FROM Course c WHERE c.isActive = true")
     List<Course> findAllActiveCourses();
+
+    @Query("SELECT c FROM Course c WHERE c.id = :id AND c.isActive = true")
+    Course getCourseById(Integer id);
 }
