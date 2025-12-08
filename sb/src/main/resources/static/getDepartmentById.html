@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Department By ID</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createDepartment.html">➕ Add Department</a>
+    <a href="updateDepartment.html">✏️ Update Department</a>
+    <a href="getDepartmentById.html">🔍 Get Department By ID</a>
+    <a href="deleteDepartment.html">🗑️ Delete Department</a>
+    <a href="getAllDepartments.html">📋 View All Departments</a>
+</nav>
+
+<h1>Get Department By ID</h1>
+<form id="getDepartmentForm">
+    <label for="id">Department ID</label>
+    <input type="number" id="id" name="id" required>
+    <button type="submit">Fetch</button>
+</form>
+
+<div id="response"></div>
+
+<script>
+    document.getElementById("getDepartmentForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const id = document.getElementById("id").value;
+      const res = await fetch(`http://localhost:8080/getDepartmentById/${id}`);
+      const data = await res.json();
+      const responseDiv = document.getElementById("response");
+      responseDiv.style.display = "block";
+
+      // ✅ formatted card output
+      responseDiv.innerHTML = `
+        <div class="card">
+          <div><strong>ID:</strong> ${data.id ?? "—"}</div>
+          <div><strong>Name:</strong> ${data.name ?? "—"}</div>
+          <div><strong>Created:</strong> ${formatDate(data.createdDate)}</div>
+          <div><strong>Updated:</strong> ${formatDate(data.updatedDate)}</div>
+          <div><strong>Status:</strong> ${data.isActive ? "Active" : "Inactive"}</div>
+        </div>`;
+    });
+
+    // ✅ helper for date formatting
+    function formatDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      return isNaN(d) ? "—" : d.toLocaleString();
+    }
+</script>
+</body>
+</html>

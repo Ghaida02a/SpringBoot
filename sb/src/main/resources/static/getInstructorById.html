@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Find Instructor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createInstructor.html">➕ Add Instructor</a>
+    <a href="updateInstructor.html">✏️ Update Instructor</a>
+    <a href="getInstructorById.html">🔍 Get Instructor By ID</a>
+    <a href="deleteInstructor.html">🗑️ Delete Instructor</a>
+    <a href="getAllInstructors.html">📋 View All Instructors</a>
+</nav>
+<h1>Find Instructor By ID</h1>
+<input type="number" id="searchId" placeholder="Enter ID">
+<button onclick="search()">🔍 Search</button>
+<div id="result"></div>
+
+<script>
+    async function search() {
+      const id = searchId.value;
+      const res = await fetch(`http://localhost:8080/getInstructorById/${id}`);
+      const data = await res.json();
+      result.textContent = `ID: ${data.id}, Name: ${data.name}, Email: ${data.email}, Phone: ${data.phoneNumber}, Designation: ${data.designation}`;
+    }
+</script>
+</body>
+</html>

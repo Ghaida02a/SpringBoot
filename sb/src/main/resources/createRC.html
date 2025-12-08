@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Full Course</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav a { margin-right: 10px; }
+        label { display: block; margin-top: 10px; }
+        input { width: 300px; padding: 5px; }
+        button { margin-top: 15px; padding: 10px 20px; }
+        pre { background: #f4f4f4; padding: 10px; border: 1px solid #ccc; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="addFullCourse.html">➕ Add Full Course</a>
+</nav>
+
+<h1>Add Full Course</h1>
+<form id="courseForm">
+    <label for="name">Course Name:</label>
+    <input type="text" id="name" name="name" />
+
+    <label for="hours">Course Hours:</label>
+    <input type="number" id="hours" name="hours" step="0.5" />
+
+    <label for="instructorId">Instructor ID:</label>
+    <input type="number" id="instructorId" name="instructorId" />
+
+    <label for="departmentId">Department ID:</label>
+    <input type="number" id="departmentId" name="departmentId" />
+
+    <label for="marks">Marks (comma separated IDs):</label>
+    <input type="text" id="marks" name="marks" placeholder="e.g. 1,2,3" />
+
+    <button type="submit">Create Course</button>
+    <button type="button" onclick="refreshForm()">🔄 Refresh</button>
+</form>
+
+<h3>Response:</h3>
+<pre id="response"></pre>
+
+<script>
+    const form = document.getElementById("courseForm");
+    const responseBox = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const hours = parseFloat(document.getElementById("hours").value);
+      const instructorId = parseInt(document.getElementById("instructorId").value);
+      const departmentId = parseInt(document.getElementById("departmentId").value);
+      const marks = document.getElementById("marks").value
+        .split(",")
+        .map(m => m.trim())
+        .filter(m => m.length > 0);
+
+      const payload = {
+        name: name,
+        hours: hours,
+        instructorId: instructorId,
+        departmentId: departmentId,
+        marks: marks
+      };
+
+      try {
+        const res = await fetch("http://192.168.100.137:8080/addFullCourse", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          responseBox.textContent = JSON.stringify(data, null, 2);
+          responseBox.className = "success";
+        } else {
+          const errorData = await res.json().catch(() => null);
+          if (errorData && errorData.message) {
+            responseBox.textContent = "Error: " + errorData.message;
+          } else {
+            const errorText = await res.text();
+            responseBox.textContent = "Error: " + errorText;
+          }
+          responseBox.className = "error";
+        }
+
+        responseBox.style.display = "block";
+      } catch (err) {
+        responseBox.textContent = "Error creating course: " + err;
+        responseBox.className = "error";
+        responseBox.style.display = "block";
+      }
+    });
+
+    function refreshForm() {
+      form.reset();
+      responseBox.style.display = "none";
+    }
+</script>
+</body>
+</html>
