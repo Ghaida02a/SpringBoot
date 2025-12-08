@@ -47,10 +47,9 @@ public class CourseController {
 
     //get course by id
     @GetMapping("getCourseById/{id}")
-    public ResponseEntity<CourseResponseDTO> getStudent(@PathVariable int id) throws Exception{
-        Course course = courseService.getCourseById(id);
-        CourseResponseDTO courseResponseDTO = CourseResponseDTO.convertEntityToDTO(course);
-        return ResponseEntity.status(HttpStatus.OK).body(courseResponseDTO);
+    public ResponseEntity<CourseResponseDTO> getCourse(@PathVariable int id) throws Exception{
+        CourseResponseDTO course = CourseResponseDTO.entityToDTOResponse(courseService.getCourseById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(course);
     }
 
     //update course

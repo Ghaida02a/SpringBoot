@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface DepartmentRepository extends JpaRepository<Department, Integer> {
 
 
-    @Query("SELECT d FROM Department d WHERE d.id =:id And d.isActive = true")
+    @Query("SELECT d FROM Department d WHERE d.id =:id")
     Department getDepartmentById(Integer id);
 }

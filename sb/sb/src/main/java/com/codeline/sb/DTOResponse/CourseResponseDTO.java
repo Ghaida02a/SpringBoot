@@ -47,7 +47,6 @@ public class CourseResponseDTO {
                 .marks(entity.getMarks() != null
                         ? entity.getMarks().stream()
                         .map(m -> MarkResponseDTO.builder()
-                                .id(m.getId())
                                 .studentName(m.getStudentName())
                                 .score(m.getScore())
                                 .build())
@@ -56,17 +55,17 @@ public class CourseResponseDTO {
                 .build();
     }
 
-    //convert Entity To DTO
-    public static CourseResponseDTO convertEntityToDTO(Course entity) {
-        if (entity == null) {
+    //DTO Response -> Entity
+    public static Course convertEntityToDTO(CourseResponseDTO dto) {
+        if (dto == null) {
             return null;
         }
-        return CourseResponseDTO.builder()
-                .name(entity.getName())
-                .hours(entity.getHours())
-                .CreatedDate(entity.getCreatedDate())
-                .UpdatedDate(entity.getUpdatedDate())
-                .isActive(entity.getIsActive())
+        return Course.builder()
+                .name(dto.getName())
+                .hours(dto.getHours())
+                .createdDate(dto.getCreatedDate())
+                .updatedDate(dto.getUpdatedDate())
+                .isActive(dto.getIsActive())
                 .build();
     }
 }

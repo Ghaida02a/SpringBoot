@@ -1,26 +1,39 @@
 package com.codeline.sb.DTORequest;
 
 import com.codeline.sb.Entities.Mark;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import com.codeline.sb.Helper.Constants;
+import com.codeline.sb.Helper.Utils;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class MarkRequestDTO {
-
-    @NotNull(message = "Score cannot be null")
-    @Positive(message = "Score must be positive")
     private Double score;
-
-    @NotBlank(message = "Student name cannot be empty")
     private String studentName;
+
+    private Integer courseId;
+
+    //Validation
+    public static void validateMarkRequestDTO(MarkRequestDTO dto) {
+        if (Utils.isNull(dto.getScore()) || dto.getScore() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.MARK_SCORE_NOT_VALID);
+        }
+        if (Utils.isNull(dto.getStudentName()) || dto.getStudentName().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.MARK_STUDENT_NAME_NOT_VALID);
+        }
+        if (Utils.isNull(dto.getCourseId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.MARK_COURSE_ID_NOT_VALID);
+        }
+    }
 
     // Convert DTO → Entity
     public static Mark convertDTOToEntity(MarkRequestDTO dto) {

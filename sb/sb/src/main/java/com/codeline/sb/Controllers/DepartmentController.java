@@ -1,10 +1,13 @@
 package com.codeline.sb.Controllers;
 
-import com.codeline.sb.DTORequest.DepartmentRequested;
+import com.codeline.sb.DTORequest.DepartmentCreateRequested;
+import com.codeline.sb.DTOResponse.DepartmentResponseDTO;
 import com.codeline.sb.Entities.Department;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +19,10 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     @PostMapping("/createDepartment")
-    public String createDepartment(@RequestBody DepartmentRequested requestObj){
-        Department department = departmentService.saveDepartment(requestObj);
-        return Constants.Success + "Department created with ID: " + department.getId();
+    public ResponseEntity<DepartmentResponseDTO> createDepartment(@RequestBody DepartmentCreateRequested requestObj){
+        DepartmentCreateRequested.validateDepartmentCreateRequested(requestObj);
+        DepartmentResponseDTO createdDepartment = departmentService.saveDepartment(requestObj);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDepartment);
     }
 
 

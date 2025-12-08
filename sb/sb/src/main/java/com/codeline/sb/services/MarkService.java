@@ -1,12 +1,17 @@
 package com.codeline.sb.services;
 
+import com.codeline.sb.DTORequest.MarkRequestDTO;
+import com.codeline.sb.DTOResponse.MarkResponseDTO;
 import com.codeline.sb.Entities.Mark;
+import com.codeline.sb.Helper.Constants;
+import com.codeline.sb.Helper.Utils;
 import com.codeline.sb.repositories.MarkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MarkService {
@@ -21,62 +26,16 @@ public class MarkService {
     }
 
     //Save new Mark
-    public Mark saveMark(Mark mark) {
+    public MarkResponseDTO saveMark(MarkRequestDTO markRequestDTO) {
+        Mark mark = MarkRequestDTO.convertDTOToEntity(markRequestDTO);
         mark.setCreatedDate(new Date());
         mark.setIsActive(Boolean.TRUE);
-        return markRepository.save(mark);
+        return MarkResponseDTO.convertEntityToDTO(markRepository.save(mark));
     }
 
     //Get mark by ID
-//    public Course getMarkById(int id) throws Exception {
-//        Optional<Mark> markOpt = markRepository.findById(id);
-//        if (markOpt != null) {
-//            return markOpt.get();
-//        } else {
-//            throw new Exception(Constants.Not_Found);
-//        }
-//    }
-
-//    // Update mark safely
-//    public String updateMark(Mark updateObj) throws Exception {
-//        Optional<Mark> existingOpt = markRepository.findById(updateObj.getId());
-//
-//        if (existingOpt.isPresent()) {
-//            Course existingMark = existingOpt.get();
-//
-//            if (Boolean.TRUE.equals(existingMark.getIsActive())) {
-//                // Only update fields provided
-//                existingMark.setName(updateObj.getStudentName());
-//                existingMark.setHours(updateObj.getScore());
-//                existingMark.setUpdatedDate(new Date());
-//                existingMark.setIsActive(Boolean.TRUE);
-//
-//                markRepository.save(existingMark);
-//                return Constants.Success;
-//            } else {
-//                throw new Exception(Constants.Bad_Request);
-//            }
-//        } else {
-//            throw new Exception(Constants.Not_Found);
-//        }
-//    }
-
-//    //Soft delete course
-//    public void deleteCourse(Integer id) throws Exception {
-//        Optional<Course> existingOpt = courseRepository.findById(id);
-//
-//        if (existingOpt.isPresent()) {
-//            Course existingCourse = existingOpt.get();
-//
-//            if (Boolean.TRUE.equals(existingCourse.getIsActive())) {
-//                existingCourse.setUpdatedDate(new Date());
-//                existingCourse.setIsActive(Boolean.FALSE);
-//                courseRepository.save(existingCourse);
-//            } else {
-//                throw new Exception(Constants.Bad_Request);
-//            }
-//        } else {
-//            throw new Exception(Constants.Not_Found);
-//        }
-//    }
+    public MarkResponseDTO getMarkById(Integer id) throws Exception {
+        Mark mark = markRepository.findById(id).orElseThrow(() -> new Exception(Constants.MARK_NOT_FOUND));
+        return MarkResponseDTO.convertEntityToDTO(mark);
+    }
 }

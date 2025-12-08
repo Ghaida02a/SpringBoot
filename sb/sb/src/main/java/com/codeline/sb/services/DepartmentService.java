@@ -1,6 +1,7 @@
 package com.codeline.sb.services;
 
-import com.codeline.sb.DTORequest.DepartmentRequested;
+import com.codeline.sb.DTORequest.DepartmentCreateRequested;
+import com.codeline.sb.DTOResponse.DepartmentResponseDTO;
 import com.codeline.sb.Entities.Department;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.repositories.DepartmentRepository;
@@ -17,11 +18,11 @@ public class DepartmentService {
     @Autowired
     DepartmentRepository departmentRepository;
 
-    public Department saveDepartment(DepartmentRequested departmentDTO) {
-        Department department = DepartmentRequested.convertDTOToEntity(departmentDTO);
+    public DepartmentResponseDTO saveDepartment(DepartmentCreateRequested departmentDTO) {
+        Department department = DepartmentCreateRequested.convertDTOToEntity(departmentDTO);
         department.setCreatedDate(new Date());
         department.setIsActive(Boolean.TRUE);
-        return departmentRepository.save(department);
+        return DepartmentResponseDTO.convertDepartmentToDepartmentDTO(departmentRepository.save(department));
     }
 
     public List<Department> getAllDepartments() {

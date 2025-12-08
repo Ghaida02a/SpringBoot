@@ -22,10 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class CourseCreateRequested {
-    @NotBlank(message = "Course name cannot be empty")
     private String name;
-
-    @Positive(message = "Course hours must be positive")
     private Double hours;
 
     private Integer instructorId;
@@ -35,16 +32,16 @@ public class CourseCreateRequested {
     //Validation
     public static void validateCourseCreateRequested(CourseCreateRequested dto) {
         if (Utils.isNull(dto.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course name cannot be empty");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_NAME);
         }
         if (Utils.isNull(dto.getHours()) || dto.getHours() <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course hours must be greater than 0");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_HOURS_NOT_VALID);
         }
         if (Utils.isNull(dto.getInstructorId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Instructor ID is not valid");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_CREATE_REQUEST_INSTRUCTOR_ID_NOT_VALID);
         }
         if (Utils.isNull(dto.getMarks())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Marks are not valid");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_CREATE_REQUEST_MARKS_NOT_VALID);
         }
     }
 
