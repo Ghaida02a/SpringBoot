@@ -21,8 +21,6 @@ public class CourseController {
 
     @PostMapping("/create")
     public ResponseEntity<CourseResponseDTO> createCourse(@RequestBody CourseCreateRequested requestObj) throws Exception{
-//        Course course = courseService.saveCourse(requestObj.convertDTOToEntity(requestObj));
-//        return CourseResponseDTO.entityToDTOResponse(course);
         CourseCreateRequested.validateCourseCreateRequested(requestObj);
         CourseResponseDTO createdCourse = courseService.saveCourse(requestObj);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);

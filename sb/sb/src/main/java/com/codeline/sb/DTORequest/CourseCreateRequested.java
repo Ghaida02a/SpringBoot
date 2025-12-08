@@ -28,9 +28,6 @@ public class CourseCreateRequested {
     @Positive(message = "Course hours must be positive")
     private Double hours;
 
-//    private InstructorRequested instructor;
-//
-//    private List<MarkRequestDTO> marks;
     private Integer instructorId;
     private Integer departmentId;
     private List<String> marks;
@@ -60,34 +57,8 @@ public class CourseCreateRequested {
                 .name(dto.getName())
                 .hours(dto.getHours())
                 .build();
-
-//        // Map instructor
-//        if (dto.getInstructor() != null) {
-//            Instructor instructor = InstructorRequested.convertDTOToEntity(dto.getInstructor());
-//            instructor.setCourse(course); // maintain bidirectional link
-//            course.setInstructor(instructor);
-//        }
-//
-//        // Map marks
-//        if (dto.getMarks() != null) {
-//            List<Mark> marks = dto.getMarks().stream()
-//                    .map(MarkRequestDTO::convertDTOToEntity)
-//                    .toList();
-//            marks.forEach(m -> m.setCourse(course)); // link marks to course
-//            course.setMarks(marks);
-//        }
-
         return course;
     }
-
-//    public static Course convertDTOToEntity(CourseRequested dto) {
-//        if (dto == null) return null;
-//        return Course.builder()
-//                .id(dto.getId())
-//                .name(dto.getName())
-//                .hours(dto.getHours())
-//                .build();
-//    }
 
     // Convert Entity → DTO
     public static CourseCreateRequested convertEntityToDTO(Course entity) {

@@ -20,9 +20,6 @@ public class CourseResponseDTO {
     // Instructor summary (id + name only)
     private InstructorSummaryDTO instructor;
 
-//    // Department summary (id + name only)
-//    private DepartmentSummaryDTO department;
-
     // List of marks with IDs
     private List<MarkResponseDTO> marks;
 

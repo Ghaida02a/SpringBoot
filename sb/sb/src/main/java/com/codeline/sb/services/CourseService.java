@@ -54,27 +54,6 @@ public class CourseService {
         return activeCourses;
     }
 
-    //Save new course
-//    public CourseResponseDTO saveCourse(CourseCreateRequested courseRequested) throws Exception{
-//        Course course = CourseCreateRequested.convertDTOToEntity(courseRequested);
-//        course.setCreatedDate(new Date());
-//        course.setIsActive(Boolean.TRUE);
-//
-//        Instructor instructor = instructorRepository.getInstructorById(courseRequested.getInstructorId());
-//        if (Utils.isNotNull(instructor)) {
-//            course.setInstructor(instructor);
-//        }else {
-//            throw new Exception(Constants.COURSE_CREATE_REQUEST_INSTRUCTOR_ID_NOT_VALID);
-//        }
-//
-//        List<Mark> marks = markRepository.findAllMarksByIds(courseRequested.getMarks());
-//        if (Utils.isNotNull(marks) && !marks.isEmpty()) {
-//            course.setMarks(marks);
-//        }else {
-//            throw new Exception(Constants.COURSE_CREATE_REQUEST_MARKS_NOT_VALID);
-//        }
-//        return CourseResponseDTO.entityToDTOResponse(courseRepository.save(course));
-//    }
     public CourseResponseDTO saveCourse(CourseCreateRequested courseRequested){
         Course course = CourseCreateRequested.convertDTOToEntity(courseRequested);
         course.setCreatedDate(new Date());
@@ -96,7 +75,6 @@ public class CourseService {
 
         return CourseResponseDTO.entityToDTOResponse(courseRepository.save(course));
     }
-
 
     //Get course by ID
     public Course getCourseById(int id) throws Exception {
