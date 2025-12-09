@@ -14,11 +14,12 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/departments")
 public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
 
-    @PostMapping("/createDepartment")
+    @PostMapping
     public ResponseEntity<DepartmentResponseDTO> createDepartment(@RequestBody DepartmentCreateRequested requestObj){
         DepartmentCreateRequested.validateDepartmentCreateRequested(requestObj);
         DepartmentResponseDTO createdDepartment = departmentService.saveDepartment(requestObj);
@@ -27,26 +28,26 @@ public class DepartmentController {
 
 
     //display all Departments
-    @GetMapping("getAllDepartments")
+    @GetMapping
     public List<Department> getAllDepartments(){
         List<Department> allDepartments = departmentService.getAllDepartments();
         return allDepartments;
     }
 
     //get Department by id
-    @GetMapping("getDepartmentById/{id}")
+    @GetMapping("/{id}")
     public Department getDepartmentById(@PathVariable int id) {
         return departmentService.getDepartmentById(id);
     }
 
     //update Department
-    @PutMapping("updateDepartment")
-    public String updateDepartment(@RequestBody Department updateObjFromUser) throws Exception {
+    @PutMapping("/{id}")
+    public String updateDepartment(@PathVariable int id,@RequestBody Department updateObjFromUser) throws Exception {
         return departmentService.updateDepartment(updateObjFromUser);
     }
 
     //delete Department by id
-    @DeleteMapping("deleteDepartment/{id}")
+    @DeleteMapping("/{id}")
     public String deleteDepartment(@PathVariable int id) throws Exception {
         departmentService.deleteDepartment(id);
         return Constants.Success;

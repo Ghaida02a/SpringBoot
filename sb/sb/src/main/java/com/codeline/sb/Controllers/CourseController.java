@@ -14,12 +14,13 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/courses")
 public class CourseController {
 
     @Autowired
     CourseService courseService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<CourseResponseDTO> createCourse(@RequestBody CourseCreateRequested requestObj) throws Exception{
         CourseCreateRequested.validateCourseCreateRequested(requestObj);
         CourseResponseDTO createdCourse = courseService.saveCourse(requestObj);
@@ -39,27 +40,27 @@ public class CourseController {
     }
 
     //display all courses
-    @GetMapping("getAllCourses")
+    @GetMapping
     public List<Course> getAll(){
         List<Course> allCourses = courseService.getAllCourses();
         return allCourses;
     }
 
     //get course by id
-    @GetMapping("getCourseById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CourseResponseDTO> getCourse(@PathVariable int id) throws Exception{
         CourseResponseDTO course = CourseResponseDTO.entityToDTOResponse(courseService.getCourseById(id));
         return ResponseEntity.status(HttpStatus.OK).body(course);
     }
 
     //update course
-    @PutMapping("updateCourse")
-    public String updateCourse(@RequestBody Course updateObjFromUser) throws Exception {
+    @PutMapping("/{id}")
+    public String updateCourse(@PathVariable int id, @RequestBody Course updateObjFromUser) throws Exception {
         return courseService.updateCourse(updateObjFromUser);
     }
 
     //delete course by id
-    @DeleteMapping("deleteCourse/{id}")
+    @DeleteMapping("/{id}")
     public String deleteCourse(@PathVariable int id) throws Exception {
         courseService.deleteCourse(id);
         return Constants.Success;

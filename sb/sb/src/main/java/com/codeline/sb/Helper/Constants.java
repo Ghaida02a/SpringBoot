@@ -3,14 +3,9 @@ package com.codeline.sb.Helper;
 public class Constants {
 
     public final static String Success = "Success";
-    public final static String Failed = "Failed";
     public final static String Bad_Request = "Bad Request";
     public final static String Not_Found = "Not Found";
-    public final static String IS_Null = "Field cannot be null";
-    public final static String List_Empty = "List is empty";
     public final static String No_Data_Found = "No Data Found";
-    public final static Integer AGE_UPPER_LIMIT = 60;
-    public final static Integer AGE_LOWER_LIMIT = 0;
 
     // Course Create Request Constants
     public final static String COURSE_NAME = "Course name cannot be null";
@@ -34,4 +29,5 @@ public class Constants {
     public final static String MARK_SCORE_NOT_VALID = "Mark score is not valid";
     public final static String MARK_COURSE_ID_NOT_VALID = "Mark course ID is not valid";
     public final static String MARK_NOT_FOUND = "Mark not found";
+    public final static String MARK_CREATE_REQUEST_COURSE_ID_NOT_VALID = "Mark course ID is not valid";
 }

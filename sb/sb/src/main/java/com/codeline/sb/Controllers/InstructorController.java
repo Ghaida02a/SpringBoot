@@ -14,6 +14,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/instructors")
 public class InstructorController {
 
     @Autowired
@@ -24,7 +25,7 @@ public class InstructorController {
 //        Instructor ins = instructorService.saveInstructor(requestObj);
 //        return Constants.Success + "Instructor created with ID: " + ins.getId();
 //    }
-    @PostMapping("/createInstructor")
+    @PostMapping
     public ResponseEntity<InstructorResponseDTO> createInstructor(@RequestBody InstructorCreateRequested requestObj){
         try {
             InstructorCreateRequested.validateInstructorRequested(requestObj);
@@ -38,26 +39,26 @@ public class InstructorController {
 
 
     //display all Instructors
-    @GetMapping("getAllInstructors")
+    @GetMapping
     public List<Instructor> getAllInstructors(){
         List<Instructor> allInstructors = instructorService.getAllInstructors();
         return allInstructors;
     }
 
     //get Instructor by id
-    @GetMapping("getInstructorById/{id}")
+    @GetMapping("/{id}")
     public Instructor getInstructorById(@PathVariable int id) {
         return instructorService.getInstructorById(id);
     }
 
     //update Instructor
-    @PutMapping("updateInstructor")
-    public String updateInstructor(@RequestBody Instructor updateObjFromUser) throws Exception {
+    @PutMapping("/{id}")
+    public String updateInstructor(@PathVariable int id,@RequestBody Instructor updateObjFromUser) throws Exception {
         return instructorService.updateInstructor(updateObjFromUser);
     }
 
     //delete Instructor by id
-    @DeleteMapping("deleteInstructor/{id}")
+    @DeleteMapping("/{id}")
     public String deleteInstructor(@PathVariable int id) throws Exception {
         instructorService.deleteInstructor(id);
         return Constants.Success;

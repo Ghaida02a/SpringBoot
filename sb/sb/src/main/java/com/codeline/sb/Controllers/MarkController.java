@@ -11,25 +11,26 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/marks")
 public class MarkController {
 
     @Autowired
     MarkService markService;
 
-    @PostMapping("/createMarks")
+    @PostMapping
     public MarkResponseDTO createMarks(@RequestBody MarkRequestDTO requestDTO) {
         MarkRequestDTO.validateMarkRequestDTO(requestDTO);
         MarkResponseDTO createdMark = markService.saveMark(requestDTO);
         return createdMark;
     }
 
-    @GetMapping("getAllMarks")
+    @GetMapping
     public List<Mark> getAllMarks() {
         List<Mark> allMarks = markService.getAllMarks();
         return allMarks;
     }
 
-    @GetMapping("getMarkById/{id}")
+    @GetMapping("/{id}")
     public MarkResponseDTO getMarkById(@PathVariable int id) throws Exception{
         return markService.getMarkById(id);
     }
