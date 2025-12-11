@@ -48,8 +48,6 @@ public class CourseCreateRequested {
 
     // Convert DTO → Entity
     public static Course convertDTOToEntity(CourseCreateRequested dto) {
-        if (dto == null) return null;
-
         Course course = Course.builder()
                 .name(dto.getName())
                 .hours(dto.getHours())
@@ -59,7 +57,6 @@ public class CourseCreateRequested {
 
     // Convert Entity → DTO
     public static CourseCreateRequested convertEntityToDTO(Course entity) {
-        if (entity == null) return null;
         return CourseCreateRequested.builder()
                 .name(entity.getName())
                 .hours(entity.getHours())
