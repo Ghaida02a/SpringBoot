@@ -17,15 +17,15 @@ public class PhoneNumberController {
     PhoneNumberService phoneNumberService;
 
     //POST /students/{id}/phoneNumbers/add
-    @PostMapping("/{studentId}/add")
+    @PostMapping("/PhoneNumber/addToStudent/{studentId}")
     public ResponseEntity<PhoneNumberCreateResponse> addPhoneNumberToStudent(@PathVariable Integer studentId, @RequestBody PhoneNumberCreateRequest phoneNumber) throws Exception {
         PhoneNumberCreateRequest.validatePhoneNumberCreateRequested(phoneNumber);
         PhoneNumberCreateResponse createdPhoneNumber = phoneNumberService.addPhoneNumberToStudent(studentId, phoneNumber);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPhoneNumber);
     }
     //PUT /phoneNumbers/{id}/update
-    @PutMapping("/{id}")
-    public ResponseEntity<PhoneNumberCreateResponse> updatePhoneNumber(@PathVariable Integer id, @RequestBody PhoneNumberCreateRequest phoneNumber) throws Exception {
+    @PutMapping("/phoneNumber/{id}/update")
+    public ResponseEntity<PhoneNumberCreateResponse> updatePhoneNumber(@PathVariable Integer id, @RequestBody PhoneNumberCreateRequest phoneNumber){
         try {
             PhoneNumberCreateRequest.validatePhoneNumberCreateRequested(phoneNumber);
             return ResponseEntity.status(HttpStatus.OK).body(phoneNumberService.updatePhoneNumber(id, phoneNumber));
@@ -34,7 +34,7 @@ public class PhoneNumberController {
         }
     }
     //DELETE /phoneNumbers/{id}/delete
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/phoneNumbers/{id}/delete")
     public ResponseEntity<String> deletePhoneNumber(@PathVariable Integer id) throws Exception {
         phoneNumberService.deletePhoneNumber(id);
         return ResponseEntity.status(HttpStatus.OK).body(Constants.PHONE_NUMBER_DELETED_SUCCESS);
