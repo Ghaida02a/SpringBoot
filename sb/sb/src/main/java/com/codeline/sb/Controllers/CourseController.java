@@ -41,9 +41,11 @@ public class CourseController {
 
     //display all courses
     @GetMapping
-    public List<Course> getAll(){
+    public List<CourseResponseDTO> getAll(){
         List<Course> allCourses = courseService.getAllCourses();
-        return allCourses;
+        return allCourses.stream()
+                .map(CourseResponseDTO::entityToDTOResponse)
+                .toList();
     }
 
     //get course by id

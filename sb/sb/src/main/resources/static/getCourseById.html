@@ -152,7 +152,7 @@
       }
 
       try {
-        const res = await fetch(`http://localhost:8080/getCourseById/${id}`);
+        const res = await fetch(`http://localhost:8080/courses/${id}`);
         const course = await res.json();
 
         document.getElementById("courseCard").style.display = "block";

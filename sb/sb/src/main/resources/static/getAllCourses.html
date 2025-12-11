@@ -40,15 +40,12 @@
 
     async function refreshCourses() {
       try {
-<!--        const res = await fetch("http://localhost:8080/getAllCourses");-->
-<!--        const data = await res.json();-->
-// For getAllCourses
-const res = await fetch("http://localhost:8080/getAllCourses");
-const courses = await res.json(); // ✅ returns array
+const res = await fetch("http://localhost:8080/courses");
+const courses = await res.json();
 
         tableBody.innerHTML = "";
 
-        data.forEach(course => {
+        courses.forEach(course => {
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>${course.id}</td>
