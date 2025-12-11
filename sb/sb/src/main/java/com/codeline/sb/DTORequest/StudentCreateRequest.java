@@ -1,19 +1,12 @@
 package com.codeline.sb.DTORequest;
 
-import com.codeline.sb.Entities.Address;
-import com.codeline.sb.Entities.PhoneNumber;
 import com.codeline.sb.Entities.Student;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.Helper.Utils;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
@@ -29,8 +22,8 @@ public class StudentCreateRequest {
     private Date dateOfBirth;
     private String gender;
 
-    private List<String> phoneNumbers;
-    private Integer addressId;
+    private List<PhoneNumberCreateRequest> phoneNumbers;
+    private AddressCreateRequest address;
 
 
     //Validation
@@ -50,12 +43,10 @@ public class StudentCreateRequest {
         if (Utils.isNull(dto.getGender())) {
             throw new Exception(Constants.STUDENT_GENDER_NOT_VALID);
         }
-        if (Utils.isNull(dto.getPhoneNumbers())) {
+        if (Utils.isNull(dto.getPhoneNumbers()) || dto.getPhoneNumbers().isEmpty()) {
             throw new Exception(Constants.STUDENT_PHONE_NUMBER_NOT_VALID);
         }
-        if (Utils.isNull(dto.getAddressId())) {
-            throw new Exception(Constants.STUDENT_ADDRESS_NOT_VALID);
-        }
+        //Address can be null, so no validation
     }
 
     //Convert dto -> entity

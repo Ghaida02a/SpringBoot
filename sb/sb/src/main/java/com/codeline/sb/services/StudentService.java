@@ -1,5 +1,6 @@
 package com.codeline.sb.services;
 
+import com.codeline.sb.DTORequest.PhoneNumberCreateRequest;
 import com.codeline.sb.DTORequest.StudentCreateRequest;
 import com.codeline.sb.DTOResponse.StudentCreateResponse;
 import com.codeline.sb.Entities.Address;
@@ -34,24 +35,39 @@ public class StudentService {
         return studentRepository.findAllActiveStudents();
     }
 
-    public StudentCreateResponse saveStudent(StudentCreateRequest student) {
-        Student newStudent = StudentCreateRequest.convertDTOToStudent(student);
-        newStudent.setCreatedDate(new Date());
-        newStudent.setIsActive(Boolean.TRUE);
-        List<PhoneNumber> phoneNumber = phoneNumberRepository.findAllPhoneNumbersByIds(student.getPhoneNumbers());
-        if (Utils.isNotNull(phoneNumber)) {
-            newStudent.setPhoneNumbers(phoneNumber);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.STUDENT_PHONE_NUMBERS_IS_NULL);
+    public StudentCreateResponse saveStudent(StudentCreateRequest request) throws Exception {
+        Student student = StudentCreateRequest.convertDTOToStudent(request);
+        student.setIsActive(Boolean.TRUE);
+        student.setCreatedDate(new Date());
+
+        studentRepository.save(student);
+
+        for (PhoneNumberCreateRequest phoneDto : request.getPhoneNumbers()) {
+            PhoneNumber phone = new PhoneNumber();
+            phone.setPhoneNumber(phoneDto.getPhoneNumber());
+            phone.setCountryCode(phoneDto.getCountryCode());
+            phone.setIsLandLine(phoneDto.getIsLandLine());
+            phone.setIsActive(Boolean.TRUE);
+            phone.setCreatedDate(new Date());
+            phone.setStudent(student); // enforce composition
+            phoneNumberRepository.save(phone);
         }
 
-        Address address = addressRepository.getAddressById(student.getAddressId());
-        if (Utils.isNotNull(address)) {
-            newStudent.setAddress(address);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.STUDENT_ADDRESS_NOT_VALID);
+        if (request.getAddress() != null) {
+            Address address = new Address();
+            address.setHouseNumber(request.getAddress().getHouseNumber());
+            address.setStreet(request.getAddress().getStreet());
+            address.setCity(request.getAddress().getCity());
+            address.setStateOrProvince(request.getAddress().getStateOrProvince());
+            address.setCountry(request.getAddress().getCountry());
+            address.setPostalCode(request.getAddress().getPostalCode());
+            address.setIsActive(Boolean.TRUE);
+            address.setCreatedDate(new Date());
+            address.setStudent(student); // enforce composition
+            addressRepository.save(address);
         }
-        return StudentCreateResponse.convertStudentToDTO(studentRepository.save(newStudent));
+
+        return StudentCreateResponse.convertStudentToDTO(student);
     }
 
     //Get Student by ID
@@ -92,16 +108,6 @@ public class StudentService {
             studentRepository.save(existingOpt);
         } else {
             throw new Exception(Constants.Not_Found);
-        }
-    }
-
-    public Student addPhoneNumberToStudent(Integer studentId, PhoneNumber phoneNumber) throws Exception {
-        Student student = studentRepository.getStudentById(studentId);
-        if (Utils.isNull(student)) {
-            throw new Exception(Constants.STUDENT_ID_IS_NOT_VALID);
-        } else {
-            student.getPhoneNumbers().add(phoneNumber);
-            return studentRepository.save(student);
         }
     }
 }

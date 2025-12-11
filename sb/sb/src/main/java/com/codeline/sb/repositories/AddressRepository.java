@@ -8,4 +8,7 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
 
     @Query("SELECT a FROM Address a WHERE a.id = :id")
     Address getAddressById(Integer id);
+
+    @Query("SELECT a FROM Address a WHERE a.student.id = :studentId AND a.isActive = true")
+    Address getAddressByStudentId(Integer studentId);
 }
