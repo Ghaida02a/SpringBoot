@@ -42,15 +42,17 @@ public class StudentService {
 
         studentRepository.save(student);
 
-        for (PhoneNumberCreateRequest phoneDto : request.getPhoneNumbers()) {
-            PhoneNumber phone = new PhoneNumber();
-            phone.setPhoneNumber(phoneDto.getPhoneNumber());
-            phone.setCountryCode(phoneDto.getCountryCode());
-            phone.setIsLandLine(phoneDto.getIsLandLine());
-            phone.setIsActive(Boolean.TRUE);
-            phone.setCreatedDate(new Date());
-            phone.setStudent(student); // enforce composition
-            phoneNumberRepository.save(phone);
+        if (request.getPhoneNumbers() != null) {
+            for (PhoneNumberCreateRequest phoneDto : request.getPhoneNumbers()) {
+                PhoneNumber phone = new PhoneNumber();
+                phone.setPhoneNumber(phoneDto.getPhoneNumber());
+                phone.setCountryCode(phoneDto.getCountryCode());
+                phone.setIsLandLine(phoneDto.getIsLandLine());
+                phone.setIsActive(Boolean.TRUE);
+                phone.setCreatedDate(new Date());
+                phone.setStudent(student); // enforce composition
+                phoneNumberRepository.save(phone);
+            }
         }
 
         if (request.getAddress() != null) {

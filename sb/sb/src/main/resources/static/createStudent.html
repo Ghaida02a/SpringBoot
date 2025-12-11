@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav a { margin-right: 10px; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input, select { width: 300px; padding: 5px; margin-bottom: 5px; }
+        button { margin-top: 15px; padding: 10px 20px; cursor: pointer; }
+        #response {
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .response-title { font-weight: bold; font-size: 1.1em; margin-bottom: 10px; }
+        .response-details { margin-left: 20px; }
+        .response-details p { margin: 5px 0; }
+        .section { border: 1px solid #ddd; padding: 15px; margin: 15px 0; background: #f9f9f9; }
+        .section h3 { margin-top: 0; }
+        .phone-entry { border: 1px solid #ccc; padding: 10px; margin: 10px 0; background: white; }
+        .remove-btn { background: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+        .add-btn { background: #28a745; color: white; border: none; padding: 8px 15px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createStudent.html">➕ Add Student</a>
+    <a href="getAllStudents.html">📋 View All Students</a>
+</nav>
+
+<h1>Add a Student</h1>
+<form id="studentForm">
+    <div class="section">
+        <h3>Basic Information</h3>
+        <label for="firstName">First Name: *</label>
+        <input type="text" id="firstName" name="firstName" required />
+
+        <label for="lastName">Last Name: *</label>
+        <input type="text" id="lastName" name="lastName" required />
+
+        <label for="email">Email: *</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="dateOfBirth">Date of Birth: *</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth" required />
+
+        <label for="gender">Gender: *</label>
+        <select id="gender" name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+
+    <div class="section">
+        <h3>Phone Numbers *</h3>
+        <div id="phoneNumbersContainer"></div>
+        <button type="button" class="add-btn" onclick="addPhoneNumber()">➕ Add Phone Number</button>
+    </div>
+
+    <div class="section">
+        <h3>Address (Optional)</h3>
+        <label>
+            <input type="checkbox" id="includeAddress" onchange="toggleAddress()"> Include Address
+        </label>
+        <div id="addressFields" style="display: none; margin-top: 10px;">
+            <label for="houseNumber">House Number:</label>
+            <input type="text" id="houseNumber" name="houseNumber" />
+
+            <label for="street">Street:</label>
+            <input type="text" id="street" name="street" />
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" />
+
+            <label for="stateOrProvince">State/Province:</label>
+            <input type="text" id="stateOrProvince" name="stateOrProvince" />
+
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" />
+
+            <label for="postalCode">Postal Code:</label>
+            <input type="text" id="postalCode" name="postalCode" />
+        </div>
+    </div>
+
+    <button type="submit">Create Student</button>
+    <button type="button" onclick="refreshForm()">🔄 Refresh</button>
+</form>
+
+<h3>Response:</h3>
+<div id="response"></div>
+
+<script>
+    let phoneNumberCount = 0;
+
+    // Add initial phone number field
+    window.onload = function() {
+        addPhoneNumber();
+    };
+
+    function addPhoneNumber() {
+        phoneNumberCount++;
+        const container = document.getElementById("phoneNumbersContainer");
+        const phoneDiv = document.createElement("div");
+        phoneDiv.className = "phone-entry";
+        phoneDiv.id = `phone-${phoneNumberCount}`;
+        phoneDiv.innerHTML = `
+            <h4>Phone Number ${phoneNumberCount}</h4>
+            <label>Phone Number: *</label>
+            <input type="text" class="phoneNumber" placeholder="e.g. 1234567890" required />
+
+            <label>Country Code: *</label>
+            <input type="text" class="countryCode" placeholder="e.g. +1" required />
+
+            <label>Is Landline: *</label>
+            <select class="isLandLine" required>
+                <option value="">Select</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+
+            <br><br>
+            <button type="button" class="remove-btn" onclick="removePhoneNumber(${phoneNumberCount})">Remove</button>
+        `;
+        container.appendChild(phoneDiv);
+    }
+
+    function removePhoneNumber(id) {
+        const phoneDiv = document.getElementById(`phone-${id}`);
+        if (phoneDiv) {
+            // Only allow removal if there's more than one phone number
+            const phoneEntries = document.querySelectorAll('.phone-entry');
+            if (phoneEntries.length > 1) {
+                phoneDiv.remove();
+            } else {
+                alert("At least one phone number is required!");
+            }
+        }
+    }
+
+    function toggleAddress() {
+        const checkbox = document.getElementById("includeAddress");
+        const addressFields = document.getElementById("addressFields");
+        addressFields.style.display = checkbox.checked ? "block" : "none";
+    }
+
+    const form = document.getElementById("studentForm");
+    const responseBox = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Collect basic information
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const email = document.getElementById("email").value;
+        const dateOfBirth = document.getElementById("dateOfBirth").value;
+        const gender = document.getElementById("gender").value;
+
+        // Collect phone numbers
+        const phoneEntries = document.querySelectorAll('.phone-entry');
+        const phoneNumbers = [];
+        for (let entry of phoneEntries) {
+            const phoneNumber = entry.querySelector('.phoneNumber').value;
+            const countryCode = entry.querySelector('.countryCode').value;
+            const isLandLine = entry.querySelector('.isLandLine').value === "true";
+
+            if (phoneNumber && countryCode) {
+                phoneNumbers.push({
+                    phoneNumber: phoneNumber,
+                    countryCode: countryCode,
+                    isLandLine: isLandLine
+                });
+            }
+        }
+
+        // Validate at least one phone number
+        if (phoneNumbers.length === 0) {
+            alert("At least one phone number is required!");
+            return;
+        }
+
+        // Collect address (if included)
+        let address = null;
+        if (document.getElementById("includeAddress").checked) {
+            const houseNumber = document.getElementById("houseNumber").value;
+            const street = document.getElementById("street").value;
+            const city = document.getElementById("city").value;
+            const stateOrProvince = document.getElementById("stateOrProvince").value;
+            const country = document.getElementById("country").value;
+            const postalCode = document.getElementById("postalCode").value;
+
+            if (houseNumber && street && city && stateOrProvince && country && postalCode) {
+                address = {
+                    houseNumber: houseNumber,
+                    street: street,
+                    city: city,
+                    stateOrProvince: stateOrProvince,
+                    country: country,
+                    postalCode: postalCode
+                };
+            }
+        }
+
+        // Build the payload
+        const payload = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            dateOfBirth: dateOfBirth,
+            gender: gender,
+            phoneNumbers: phoneNumbers,
+            address: address
+        };
+
+        try {
+            const res = await fetch("http://localhost:8080/students", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                responseBox.innerHTML = `
+                    <div class="response-title">✅ Student Created Successfully!</div>
+                    <div class="response-details">
+                        <p><strong>Student ID:</strong> ${data.id || 'N/A'}</p>
+                        <p><strong>Name:</strong> ${data.firstName || ''} ${data.lastName || ''}</p>
+                        <p><strong>Email:</strong> ${data.email || 'N/A'}</p>
+                        <p><strong>Date of Birth:</strong> ${data.dateOfBirth ? new Date(data.dateOfBirth).toLocaleDateString() : 'N/A'}</p>
+                        <p><strong>Gender:</strong> ${data.gender || 'N/A'}</p>
+                        ${data.phoneNumbers && data.phoneNumbers.length > 0 ?
+                            `<p><strong>Phone Numbers:</strong> ${data.phoneNumbers.length} added</p>` : ''}
+                        ${data.address ? '<p><strong>Address:</strong> Added</p>' : ''}
+                    </div>
+                `;
+                responseBox.className = "success";
+            } else {
+                const errorText = await res.text();
+                let errorMessage = errorText;
+
+                // Try to extract meaningful error message
+                try {
+                    const errorData = JSON.parse(errorText);
+                    errorMessage = errorData.message || errorData.error || errorText;
+                } catch (e) {
+                    // If not JSON, check if it's a plain error message
+                    if (errorText.includes("Exception")) {
+                        const match = errorText.match(/Exception: (.+?)(?:\n|$)/);
+                        if (match) errorMessage = match[1];
+                    }
+                }
+
+                responseBox.innerHTML = `
+                    <div class="response-title">❌ Error Creating Student</div>
+                    <div class="response-details">
+                        <p>${errorMessage}</p>
+                    </div>
+                `;
+                responseBox.className = "error";
+            }
+
+            responseBox.style.display = "block";
+        } catch (err) {
+            responseBox.innerHTML = `
+                <div class="response-title">❌ Network Error</div>
+                <div class="response-details">
+                    <p>Unable to connect to the server. Please make sure the server is running.</p>
+                    <p><em>${err.message}</em></p>
+                </div>
+            `;
+            responseBox.className = "error";
+            responseBox.style.display = "block";
+        }
+    });
+
+    function refreshForm() {
+        form.reset();
+        responseBox.style.display = "none";
+        // Reset phone numbers
+        document.getElementById("phoneNumbersContainer").innerHTML = "";
+        phoneNumberCount = 0;
+        addPhoneNumber();
+        // Hide address fields
+        document.getElementById("addressFields").style.display = "none";
+        document.getElementById("includeAddress").checked = false;
+    }
+</script>
+</body>
+</html>
