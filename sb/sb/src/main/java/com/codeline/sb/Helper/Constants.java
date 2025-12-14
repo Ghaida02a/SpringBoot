@@ -12,6 +12,7 @@ public class Constants {
     public final static String COURSE_HOURS_NOT_VALID = "Course hours are not valid";
     public final static String COURSE_CREATE_REQUEST_INSTRUCTOR_ID_NOT_VALID = "Instructor ID is not valid";
     public final static String COURSE_CREATE_REQUEST_MARKS_NOT_VALID = "Marks are not valid";
+    public final static String ACTIVE_COURSES_LIST_EMPTY = "Active courses list is empty";
 
     // Instructor Create Request Constants
     public final static String INSTRUCTOR_NAME = "Instructor name cannot be null";

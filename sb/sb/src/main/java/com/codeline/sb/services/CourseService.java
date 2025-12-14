@@ -39,20 +39,13 @@ public class CourseService {
 
     // Get all active courses
     public List<Course> getAllCourses() {
-//        List<Course> activeCourses = new ArrayList<>();
-//        List<Course> allCourses = courseRepository.findAll();
-//
-//        if (!allCourses.isEmpty()) {
-//            for (Course course : allCourses) {
-//                if (Boolean.TRUE.equals(course.getIsActive())) {
-//                    activeCourses.add(course);
-//                }
-//            }
-//        } else {
-//            System.out.println(Constants.No_Data_Found);
-//        }
-//        return activeCourses;
-        return courseRepository.findAllActiveCourses();
+        if(Utils.isListNotEmpty(courseRepository.findAllActiveCourses())) {
+            return courseRepository.findAllActiveCourses();
+        } else {
+//            final String activeCoursesListEmpty = Constants.ACTIVE_COURSES_LIST_EMPTY;
+//            final  = Constants.ACTIVE_COURSES_LIST_EMPTY;
+            return new ArrayList<>();
+        }
     }
 
     public CourseResponseDTO saveCourse(CourseCreateRequested courseRequested){

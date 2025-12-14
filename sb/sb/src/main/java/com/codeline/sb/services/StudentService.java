@@ -12,9 +12,7 @@ import com.codeline.sb.repositories.AddressRepository;
 import com.codeline.sb.repositories.PhoneNumberRepository;
 import com.codeline.sb.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
@@ -42,7 +40,7 @@ public class StudentService {
 
         studentRepository.save(student);
 
-        if (request.getPhoneNumbers() != null) {
+        if (Utils.isNotNull(request.getPhoneNumbers())) {
             for (PhoneNumberCreateRequest phoneDto : request.getPhoneNumbers()) {
                 PhoneNumber phone = new PhoneNumber();
                 phone.setPhoneNumber(phoneDto.getPhoneNumber());
@@ -56,7 +54,7 @@ public class StudentService {
             }
         }
 
-        if (request.getAddress() != null) {
+        if (Utils.isNotNull(request.getAddress())) {
             Address address = new Address();
             address.setHouseNumber(request.getAddress().getHouseNumber());
             address.setStreet(request.getAddress().getStreet());

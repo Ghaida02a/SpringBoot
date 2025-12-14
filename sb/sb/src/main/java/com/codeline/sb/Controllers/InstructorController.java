@@ -20,11 +20,6 @@ public class InstructorController {
     @Autowired
     InstructorService instructorService;
 
-//    @PostMapping("/createInstructor")
-//    public String createIns(@RequestBody InstructorRequested requestObj) throws Exception{
-//        Instructor ins = instructorService.saveInstructor(requestObj);
-//        return Constants.Success + "Instructor created with ID: " + ins.getId();
-//    }
     @PostMapping
     public ResponseEntity<InstructorResponseDTO> createInstructor(@RequestBody InstructorCreateRequested requestObj){
         try {
@@ -40,9 +35,11 @@ public class InstructorController {
 
     //display all Instructors
     @GetMapping
-    public List<Instructor> getAllInstructors(){
+    public List<InstructorResponseDTO> getAllInstructors(){
         List<Instructor> allInstructors = instructorService.getAllInstructors();
-        return allInstructors;
+        return allInstructors.stream()
+                .map(InstructorResponseDTO::convertInstructorToDTOResponse)
+                .toList();
     }
 
     //get Instructor by id

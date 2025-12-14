@@ -25,9 +25,11 @@ public class MarkController {
     }
 
     @GetMapping
-    public List<Mark> getAllMarks() {
+    public List<MarkResponseDTO> getAllMarks() {
         List<Mark> allMarks = markService.getAllMarks();
-        return allMarks;
+        return allMarks.stream()
+                .map(MarkResponseDTO::convertEntityToDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")

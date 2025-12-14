@@ -29,9 +29,11 @@ public class DepartmentController {
 
     //display all Departments
     @GetMapping
-    public List<Department> getAllDepartments(){
+    public List<DepartmentResponseDTO> getAllDepartments(){
         List<Department> allDepartments = departmentService.getAllDepartments();
-        return allDepartments;
+        return allDepartments.stream()
+                .map(DepartmentResponseDTO::convertDepartmentToDepartmentDTO)
+                .toList();
     }
 
     //get Department by id

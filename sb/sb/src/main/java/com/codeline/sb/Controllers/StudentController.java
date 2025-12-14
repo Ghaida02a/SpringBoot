@@ -33,9 +33,11 @@ public class StudentController {
 
     //display all students
     @GetMapping
-    public List<Student> getAll() {
+    public List<StudentCreateResponse> getAll() {
         List<Student> allStudents = studentService.getAllStudents();
-        return allStudents;
+        return allStudents.stream()
+                .map(StudentCreateResponse::convertStudentToDTO)
+                .toList();
     }
 
     //get Student by id
