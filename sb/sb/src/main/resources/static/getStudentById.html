@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Student By ID</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createStudent.html">➕ Add Student</a>
+    <a href="updateStudent.html">✏️ Update Student</a>
+    <a href="getStudentById.html">🔍 Get Student By ID</a>
+    <a href="deleteStudent.html">🗑️ Delete Student</a>
+    <a href="getAllStudents.html">📋 View All Students</a>
+</nav>
+
+<main>
+    <h1>Student Details</h1>
+
+    <label for="studentInput">Enter Student ID:</label>
+    <input type="number" id="studentInput" placeholder="e.g. 1" />
+    <button onclick="loadStudent()">🔍 Load Student</button>
+
+    <div class="card" id="studentCard" style="display:none;">
+        <div class="field"><span class="label">ID:</span> <span class="value" id="studentId">—</span></div>
+        <div class="field"><span class="label">First Name:</span> <span class="value" id="firstName">—</span></div>
+        <div class="field"><span class="label">Last Name:</span> <span class="value" id="lastName">—</span></div>
+        <div class="field"><span class="label">Email:</span> <span class="value" id="email">—</span></div>
+        <div class="field"><span class="label">Date of Birth:</span> <span class="value" id="dateOfBirth">—</span></div>
+        <div class="field"><span class="label">Gender:</span> <span class="value" id="gender">—</span></div>
+        <div class="field"><span class="label">Created:</span> <span class="value" id="createdDate">—</span></div>
+        <div class="field"><span class="label">Updated:</span> <span class="value" id="updatedDate">—</span></div>
+        <div class="field"><span class="label">Status:</span> <span class="status" id="status">—</span></div>
+
+        <div id="phoneNumbersSection" style="margin-top: 15px;">
+            <h3>Phone Numbers</h3>
+            <div id="phoneNumbersList"></div>
+        </div>
+
+        <div id="addressSection" style="margin-top: 15px; display:none;">
+            <h3>Address</h3>
+            <div id="addressDetails"></div>
+        </div>
+    </div>
+</main>
+
+<script>
+    async function loadStudent() {
+      const id = document.getElementById("studentInput").value;
+      if (!id) {
+        alert("Please enter a student ID.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:8080/students/${id}`);
+        if (!res.ok) {
+          alert("Student not found or error occurred.");
+          return;
+        }
+
+        const student = await res.json();
+
+        document.getElementById("studentCard").style.display = "block";
+        document.getElementById("studentId").textContent = student.id ?? "—";
+        document.getElementById("firstName").textContent = student.firstName ?? "—";
+        document.getElementById("lastName").textContent = student.lastName ?? "—";
+        document.getElementById("email").textContent = student.email ?? "—";
+        document.getElementById("dateOfBirth").textContent = formatDate(student.dateOfBirth);
+        document.getElementById("gender").textContent = student.gender ?? "—";
+        document.getElementById("createdDate").textContent = formatDate(student.createdDate);
+        document.getElementById("updatedDate").textContent = formatDate(student.updatedDate);
+
+        const statusEl = document.getElementById("status");
+        statusEl.textContent = student.isActive ? "Active" : "Inactive";
+        statusEl.className = "status" + (student.isActive ? "" : " inactive");
+
+        // Display phone numbers
+        const phoneList = document.getElementById("phoneNumbersList");
+        if (student.phoneNumbers && student.phoneNumbers.length > 0) {
+          phoneList.innerHTML = student.phoneNumbers.map((phone, index) => `
+            <div class="card" style="margin: 10px 0; padding: 10px;">
+              <div><strong>Phone ${index + 1}:</strong> ${phone.countryCode} ${phone.phoneNumber}</div>
+              <div><strong>Type:</strong> ${phone.isLandLine ? "Landline" : "Mobile"}</div>
+            </div>
+          `).join('');
+        } else {
+          phoneList.innerHTML = "<p>No phone numbers available.</p>";
+        }
+
+        // Display address
+        const addressSection = document.getElementById("addressSection");
+        const addressDetails = document.getElementById("addressDetails");
+        if (student.address) {
+          addressSection.style.display = "block";
+          addressDetails.innerHTML = `
+            <div class="card" style="padding: 10px;">
+              <div><strong>House Number:</strong> ${student.address.houseNumber ?? "—"}</div>
+              <div><strong>Street:</strong> ${student.address.street ?? "—"}</div>
+              <div><strong>City:</strong> ${student.address.city ?? "—"}</div>
+              <div><strong>State/Province:</strong> ${student.address.stateOrProvince ?? "—"}</div>
+              <div><strong>Country:</strong> ${student.address.country ?? "—"}</div>
+              <div><strong>Postal Code:</strong> ${student.address.postalCode ?? "—"}</div>
+            </div>
+          `;
+        } else {
+          addressSection.style.display = "none";
+        }
+      } catch (err) {
+        alert("Failed to load student: " + err);
+      }
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      return isNaN(d) ? "—" : d.toLocaleString();
+    }
+</script>
+</body>
+</html>

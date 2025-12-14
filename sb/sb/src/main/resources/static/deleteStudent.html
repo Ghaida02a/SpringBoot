@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Student</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createStudent.html">➕ Add Student</a>
+    <a href="updateStudent.html">✏️ Update Student</a>
+    <a href="getStudentById.html">🔍 Get Student By ID</a>
+    <a href="deleteStudent.html">🗑️ Delete Student</a>
+    <a href="getAllStudents.html">📋 View All Students</a>
+</nav>
+
+<main>
+    <h1>Delete a Student</h1>
+    <form id="deleteForm">
+        <label for="studentId">Student ID to delete:</label>
+        <input type="number" id="studentId" name="studentId" min="1" required />
+
+        <button type="submit">Delete Student</button>
+        <button type="button" onclick="refreshForm()">🔄 Refresh</button>
+        <div id="response"></div>
+    </form>
+</main>
+
+<script>
+    const form = document.getElementById("deleteForm");
+    const responseBox = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("studentId").value;
+
+      try {
+        const res = await fetch(`http://localhost:8080/students/${id}`, {
+          method: "DELETE"
+        });
+
+        const text = await res.text();
+        responseBox.textContent = text;
+        responseBox.className = "success";
+        responseBox.style.display = "block";
+      } catch (err) {
+        responseBox.textContent = "Error deleting student: " + err;
+        responseBox.className = "error";
+        responseBox.style.display = "block";
+      }
+    });
+
+    function refreshForm() {
+      form.reset();
+      responseBox.style.display = "none";
+    }
+</script>
+</body>
+</html>
