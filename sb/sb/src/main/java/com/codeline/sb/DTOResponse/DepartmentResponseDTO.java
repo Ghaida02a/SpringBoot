@@ -13,16 +13,16 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class DepartmentResponseDTO {
-    Integer id;
-    String name;
-    Date createdDate;
-    Date updatedDate;
-    Boolean isActive;
+    private Integer id;
+    private String name;
+    private Date createdDate;
+    private Date updatedDate;
+    private Boolean isActive;
 
     //Entity -> DTO response
     public static DepartmentResponseDTO convertDepartmentToDepartmentDTO(Department department){
         DepartmentResponseDTO dto = new DepartmentResponseDTO();
-        dto.setName(dto.getName());
+        dto.setName(department.getName());
 
         return DepartmentResponseDTO.builder()
                 .name(department.getName())

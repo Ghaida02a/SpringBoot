@@ -15,11 +15,11 @@ import org.springframework.web.server.ResponseStatusException;
 @NoArgsConstructor
 @Data
 public class DepartmentCreateRequested {
-    String name;
+    private String name;
 
     //Validation
     public static void validateDepartmentCreateRequested(DepartmentCreateRequested dto){
-        if(Utils.isNull(dto)){
+        if(Utils.isNull(dto.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.DEPARTMENT_NAME);
         }
     }

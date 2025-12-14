@@ -18,10 +18,10 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
+    private Integer id;
 
-    String name;
-    Date createdDate;
-    Date updatedDate;
-    Boolean isActive;
+    private String name;
+    private Date createdDate;
+    private Date updatedDate;
+    private Boolean isActive;
 }

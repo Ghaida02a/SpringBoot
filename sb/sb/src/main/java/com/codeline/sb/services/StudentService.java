@@ -52,6 +52,7 @@ public class StudentService {
                 phone.setCreatedDate(new Date());
                 phone.setStudent(student); // enforce composition
                 phoneNumberRepository.save(phone);
+                student.getPhoneNumbers().add(phone);
             }
         }
 
@@ -67,6 +68,7 @@ public class StudentService {
             address.setCreatedDate(new Date());
             address.setStudent(student); // enforce composition
             addressRepository.save(address);
+            student.setAddress(address);
         }
 
         return StudentCreateResponse.convertStudentToDTO(student);

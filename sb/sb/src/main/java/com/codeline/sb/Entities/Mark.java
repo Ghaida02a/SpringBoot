@@ -22,9 +22,9 @@ public class Mark {
     private Double score;
     private String studentName;
     private Date createdDate;
-    Date updatedDate;
-    Boolean isActive;
+    private Date updatedDate;
+    private Boolean isActive;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    Course course;
+    private Course course;
 }

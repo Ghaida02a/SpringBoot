@@ -18,16 +18,16 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    private Integer id;
 
-    String name;
-    Double hours;
-    Date createdDate;
-    Date updatedDate;
-    Boolean isActive;
+    private String name;
+    private Double hours;
+    private Date createdDate;
+    private Date updatedDate;
+    private Boolean isActive;
 
     @OneToOne(mappedBy = "course", cascade = CascadeType.ALL)
-    Instructor instructor;
+    private Instructor instructor;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Mark> marks = new ArrayList<>();

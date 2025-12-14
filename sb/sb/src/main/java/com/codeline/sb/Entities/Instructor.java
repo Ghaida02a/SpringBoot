@@ -14,21 +14,21 @@ import java.util.Date;
 @ToString(exclude = "course") // prevents recursion
 public class Instructor {
     @Id
-            @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
-    String name;
-    String email;
-    String phoneNumber;
-    String designation;
-    Date createdDate;
-    Date updatedDate;
-    Boolean isActive;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private String name;
+    private String email;
+    private String phoneNumber;
+    private String designation;
+    private Date createdDate;
+    private Date updatedDate;
+    private Boolean isActive;
 
 
     @OneToOne
             @JoinColumn(name = "course")
-    Course course;
+    private Course course;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    Department department;
+    private Department department;
 }
