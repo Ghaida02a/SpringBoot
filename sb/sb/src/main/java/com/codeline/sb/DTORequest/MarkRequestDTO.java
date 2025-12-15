@@ -37,9 +37,6 @@ public class MarkRequestDTO {
 
     // Convert DTO → Entity
     public static Mark convertDTOToEntity(MarkRequestDTO dto) {
-        if (dto == null) {
-            return null;
-        }
         return com.codeline.sb.Entities.Mark.builder()
                 .studentName(dto.getStudentName())
                 .score(dto.getScore())
@@ -48,9 +45,6 @@ public class MarkRequestDTO {
 
     // Convert Entity → DTO
     public static MarkRequestDTO convertEntityToDTO(Mark entity) {
-        if (entity == null) {
-            return null;
-        }
         return MarkRequestDTO.builder()
                 .studentName(entity.getStudentName())
                 .score(entity.getScore())

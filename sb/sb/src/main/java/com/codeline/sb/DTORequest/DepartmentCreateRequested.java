@@ -26,9 +26,6 @@ public class DepartmentCreateRequested {
 
     //convert DTO to Entity
     public static Department convertDTOToEntity(DepartmentCreateRequested dto) {
-        if (dto == null) {
-            return null;
-        }
         Department department = Department.builder()
                 .name(dto.getName())
                 .build();
@@ -37,9 +34,6 @@ public class DepartmentCreateRequested {
 
     //convert Entity to DTO
     public static DepartmentCreateRequested convertEntityToDTO(Department entity) {
-        if (entity == null) {
-            return null;
-        }
         return DepartmentCreateRequested.builder()
                 .name(entity.getName())
                 .build();

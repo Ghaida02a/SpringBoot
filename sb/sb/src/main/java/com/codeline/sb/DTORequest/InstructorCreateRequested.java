@@ -41,9 +41,6 @@ public class InstructorCreateRequested {
 
     //convert DTO → Entity
     public static Instructor convertDTOToEntity(InstructorCreateRequested dto) {
-        if (dto == null) {
-            return null;
-        }
         return Instructor.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
@@ -54,9 +51,6 @@ public class InstructorCreateRequested {
 
     // convert Entity → DTO
     public static InstructorCreateRequested convertEntityToDTO(Instructor entity) {
-        if (entity == null) {
-            return null;
-        }
         return InstructorCreateRequested.builder()
                 .name(entity.getName())
                 .email(entity.getEmail())
