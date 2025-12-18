@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Mark By ID</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .search-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        label {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+            min-width: 120px;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="number"]:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-search {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-search:active {
+            transform: translateY(0);
+        }
+
+        .btn-search:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .mark-card {
+            display: none;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .mark-card.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: all 0.2s ease;
+        }
+
+        .field:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field-value {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .score-display {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .score-excellent {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .score-good {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .score-average {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .score-poor {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .badge-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .student-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .nav-links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .nav-link {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background: #f8f9fa;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            label {
+                min-width: auto;
+            }
+
+            input[type="number"] {
+                min-width: auto;
+            }
+
+            .btn-search {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .field {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .nav-link {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Get Mark By ID</h1>
+            <p class="subtitle">Search for a specific mark record by its ID</p>
+        </div>
+
+        <div class="search-section">
+            <div class="input-group">
+                <label for="markIdInput">Mark ID:</label>
+                <input
+                    type="number"
+                    id="markIdInput"
+                    placeholder="Enter mark ID (e.g., 1)"
+                    min="1"
+                    onkeypress="handleKeyPress(event)"
+                />
+                <button class="btn-search" onclick="loadMark()" id="searchBtn">
+                    <span>🔍</span>
+                    <span>Search</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p style="color: #666; font-size: 16px;">Loading mark details...</p>
+        </div>
+
+        <div class="mark-card" id="markCard">
+            <div class="field">
+                <span class="field-label">Student Name</span>
+                <span class="field-value student-name" id="studentName">—</span>
+            </div>
+            <div class="field">
+                <span class="field-label">Score</span>
+                <span class="field-value" id="scoreContainer">—</span>
+            </div>
+            <div class="field">
+                <span class="field-label">Course ID</span>
+                <span class="field-value" id="courseId">—</span>
+            </div>
+            <div class="field">
+                <span class="field-label">Created Date</span>
+                <span class="field-value" id="createdDate">—</span>
+            </div>
+            <div class="field">
+                <span class="field-label">Updated Date</span>
+                <span class="field-value" id="updatedDate">—</span>
+            </div>
+            <div class="field">
+                <span class="field-label">Status</span>
+                <span class="field-value" id="statusContainer">—</span>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="view-marks.html" class="nav-link">📊 View All Marks</a>
+            <a href="create-mark.html" class="nav-link">➕ Create Mark</a>
+            <a href="index.html" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Get the base URL
+        const API_BASE_URL = window.location.origin;
+
+        // Focus on input when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('markIdInput').focus();
+        });
+
+        // Handle Enter key press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                loadMark();
+            }
+        }
+
+        async function loadMark() {
+            const markId = document.getElementById('markIdInput').value.trim();
+            const loadingDiv = document.getElementById('loading');
+            const messageDiv = document.getElementById('message');
+            const markCard = document.getElementById('markCard');
+            const searchBtn = document.getElementById('searchBtn');
+
+            // Validate input
+            if (!markId) {
+                showMessage('Please enter a mark ID', 'error');
+                return;
+            }
+
+            if (markId <= 0) {
+                showMessage('Please enter a valid mark ID (greater than 0)', 'error');
+                return;
+            }
+
+            // Hide previous content
+            messageDiv.style.display = 'none';
+            markCard.classList.remove('show');
+            loadingDiv.style.display = 'block';
+            searchBtn.disabled = true;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/marks/${markId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                loadingDiv.style.display = 'none';
+                searchBtn.disabled = false;
+
+                if (response.ok) {
+                    const mark = await response.json();
+                    displayMark(mark);
+                    markCard.classList.add('show');
+                } else {
+                    const errorText = await response.text();
+                    let errorMessage = 'Failed to load mark';
+
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        errorMessage = errorJson.message || errorJson.error || errorMessage;
+                    } catch (e) {
+                        errorMessage = errorText || errorMessage;
+                    }
+
+                    if (response.status === 404) {
+                        errorMessage = `Mark with ID ${markId} not found`;
+                    }
+
+                    showMessage(`Error: ${errorMessage}`, 'error');
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                searchBtn.disabled = false;
+                showMessage(`Network error: ${error.message}`, 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        function displayMark(mark) {
+            // Student Name
+            document.getElementById('studentName').textContent =
+                mark.studentName || 'N/A';
+
+            // Score with color coding
+            const scoreContainer = document.getElementById('scoreContainer');
+            if (mark.score !== null && mark.score !== undefined) {
+                scoreContainer.innerHTML = getScoreBadge(mark.score);
+            } else {
+                scoreContainer.textContent = 'N/A';
+            }
+
+            // Course ID
+            document.getElementById('courseId').textContent =
+                mark.courseId || 'N/A';
+
+            // Created Date
+            document.getElementById('createdDate').textContent =
+                formatDate(mark.createdDate);
+
+            // Updated Date
+            document.getElementById('updatedDate').textContent =
+                formatDate(mark.updatedDate);
+
+            // Status
+            const statusContainer = document.getElementById('statusContainer');
+            if (mark.isActive !== null && mark.isActive !== undefined) {
+                statusContainer.innerHTML = getStatusBadge(mark.isActive);
+            } else {
+                statusContainer.textContent = 'N/A';
+            }
+        }
+
+        function getScoreBadge(score) {
+            let className = 'score-poor';
+            if (score >= 90) className = 'score-excellent';
+            else if (score >= 75) className = 'score-good';
+            else if (score >= 60) className = 'score-average';
+
+            return `<span class="score-display ${className}">${score}</span>`;
+        }
+
+        function getStatusBadge(isActive) {
+            const className = isActive ? 'badge-active' : 'badge-inactive';
+            const text = isActive ? 'Active' : 'Inactive';
+            return `<span class="badge ${className}">${text}</span>`;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>

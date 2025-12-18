@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Phone Number to Student</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav a { margin-right: 10px; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input, select { width: 300px; padding: 5px; margin-bottom: 5px; }
+        button { margin-top: 15px; padding: 10px 20px; cursor: pointer; }
+        #response {
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .response-title { font-weight: bold; font-size: 1.1em; margin-bottom: 10px; }
+        .response-details { margin-left: 20px; }
+        .response-details p { margin: 5px 0; }
+        .section { border: 1px solid #ddd; padding: 15px; margin: 15px 0; background: #f9f9f9; }
+        .section h3 { margin-top: 0; }
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createStudent.html">➕ Add Student</a>
+    <a href="updateStudent.html">✏️ Update Student</a>
+    <a href="getStudentById.html">🔍 Get Student By ID</a>
+    <a href="deleteStudent.html">🗑️ Delete Student</a>
+    <a href="addPhoneNumberToStudent.html">📞 Add Phone Number</a>
+</nav>
+
+<h1>Add Phone Number to Student</h1>
+
+<div class="info-box">
+    <strong>ℹ️ Info:</strong> Use this form to add a new phone number to an existing student.
+</div>
+
+<form id="phoneNumberForm">
+    <div class="section">
+        <h3>Student Information</h3>
+        <label for="studentId">Student ID: *</label>
+        <input type="number" id="studentId" name="studentId" required placeholder="Enter student ID" />
+    </div>
+
+    <div class="section">
+        <h3>Phone Number Details</h3>
+        <label for="phoneNumber">Phone Number: *</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" required placeholder="e.g. 1234567890" />
+
+        <label for="countryCode">Country Code: *</label>
+        <input type="text" id="countryCode" name="countryCode" required placeholder="e.g. +1, +44, +91" />
+
+        <label for="isLandLine">Is Landline: *</label>
+        <select id="isLandLine" name="isLandLine" required>
+            <option value="">Select Type</option>
+            <option value="true">Yes (Landline)</option>
+            <option value="false">No (Mobile)</option>
+        </select>
+    </div>
+
+    <button type="submit">Add Phone Number</button>
+    <button type="button" onclick="refreshForm()">🔄 Refresh</button>
+</form>
+
+<h3>Response:</h3>
+<div id="response"></div>
+
+<script>
+    const form = document.getElementById("phoneNumberForm");
+    const responseBox = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Collect form data
+        const studentId = document.getElementById("studentId").value;
+        const phoneNumber = document.getElementById("phoneNumber").value;
+        const countryCode = document.getElementById("countryCode").value;
+        const isLandLine = document.getElementById("isLandLine").value === "true";
+
+        // Build the payload
+        const payload = {
+            phoneNumber: phoneNumber,
+            countryCode: countryCode,
+            isLandLine: isLandLine,
+            studentId: parseInt(studentId)
+        };
+
+        try {
+            const res = await fetch(`http://localhost:8080/PhoneNumber/addToStudent/${studentId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                responseBox.innerHTML = `
+                    <div class="response-title">✅ Phone Number Added Successfully!</div>
+                    <div class="response-details">
+                        <p><strong>Phone Number:</strong> ${data.phoneNumber || 'N/A'}</p>
+                        <p><strong>Country Code:</strong> ${data.countryCode || 'N/A'}</p>
+                        <p><strong>Type:</strong> ${data.isLandLine ? 'Landline' : 'Mobile'}</p>
+                        <p><strong>Status:</strong> ${data.isActive ? 'Active' : 'Inactive'}</p>
+                        ${data.student ? `
+                            <p><strong>Student:</strong> ${data.student.firstName || ''} ${data.student.lastName || ''} (ID: ${data.student.id || 'N/A'})</p>
+                        ` : ''}
+                        <p><strong>Created Date:</strong> ${data.createdDate ? new Date(data.createdDate).toLocaleString() : 'N/A'}</p>
+                    </div>
+                `;
+                responseBox.className = "success";
+            } else {
+                const errorText = await res.text();
+                let errorMessage = errorText;
+
+                // Try to extract meaningful error message
+                try {
+                    const errorData = JSON.parse(errorText);
+                    errorMessage = errorData.message || errorData.error || errorText;
+                } catch (e) {
+                    // If not JSON, check if it's a plain error message
+                    if (errorText.includes("Exception")) {
+                        const match = errorText.match(/Exception: (.+?)(?:\n|$)/);
+                        if (match) errorMessage = match[1];
+                    }
+                }
+
+                responseBox.innerHTML = `
+                    <div class="response-title">❌ Error Adding Phone Number</div>
+                    <div class="response-details">
+                        <p>${errorMessage}</p>
+                        <p><em>Status: ${res.status} ${res.statusText}</em></p>
+                    </div>
+                `;
+                responseBox.className = "error";
+            }
+
+            responseBox.style.display = "block";
+        } catch (err) {
+            responseBox.innerHTML = `
+                <div class="response-title">❌ Network Error</div>
+                <div class="response-details">
+                    <p>Unable to connect to the server. Please make sure the server is running on http://localhost:8080</p>
+                    <p><em>${err.message}</em></p>
+                </div>
+            `;
+            responseBox.className = "error";
+            responseBox.style.display = "block";
+        }
+    });
+
+    function refreshForm() {
+        form.reset();
+        responseBox.style.display = "none";
+    }
+</script>
+</body>
+</html>

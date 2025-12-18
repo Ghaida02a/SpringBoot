@@ -39,7 +39,7 @@
 
     async function refreshInstructors() {
   try {
-    const res = await fetch("http://localhost:8080/getAllInstructors");
+    const res = await fetch("http://localhost:8080/instructors");
     const data = await res.json();
 
     // Ensure we always have an array

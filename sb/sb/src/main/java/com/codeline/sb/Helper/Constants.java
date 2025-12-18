@@ -61,7 +61,7 @@ public class Constants {
     public final static String ADDRESS_POSTAL_CODE_NOT_VALID = "Address Postal Code cannot be null";
     public final static String ADDRESS_STUDENT_ID_NOT_VALID = "Address Student id cannot be null";
     public final static String ADDRESS_NOT_FOUND = "Address not found";
-    public final static String PHONE_NUMBER_NOT_FOUND = "Phone Number not found";
+    public final static String PHONE_NUMBER_NOT_FOUND = "Phone Number not found or is not Active";
     public final static String PHONE_NUMBER_DELETED_SUCCESS = "Phone Number deleted successfully";
 
     public final static String STUDENT_OBJECT_NOT_VALID = "Student details cannot be empty";

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Mark</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .response-details {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .response-details h3 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .response-item {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .response-item strong {
+            color: #333;
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Create Mark</h1>
+        <p class="subtitle">Enter student mark information</p>
+
+        <div id="message" class="message"></div>
+
+        <form id="markForm">
+            <div class="form-group">
+                <label for="studentName">Student Name <span class="required">*</span></label>
+                <input
+                    type="text"
+                    id="studentName"
+                    name="studentName"
+                    placeholder="Enter student name"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="score">Score <span class="required">*</span></label>
+                <input
+                    type="number"
+                    id="score"
+                    name="score"
+                    placeholder="Enter score (0 or higher)"
+                    step="0.01"
+                    min="0"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="courseId">Course ID <span class="required">*</span></label>
+                <input
+                    type="number"
+                    id="courseId"
+                    name="courseId"
+                    placeholder="Enter course ID"
+                    required
+                >
+            </div>
+
+            <div class="btn-container">
+                <button type="submit" class="btn-submit">Create Mark</button>
+                <button type="reset" class="btn-reset">Reset</button>
+            </div>
+        </form>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #666;">Creating mark...</p>
+        </div>
+
+        <div id="responseDetails" class="response-details" style="display: none;"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('markForm');
+        const messageDiv = document.getElementById('message');
+        const loadingDiv = document.getElementById('loading');
+        const responseDetailsDiv = document.getElementById('responseDetails');
+
+        // Get the base URL (works for both localhost and deployed environments)
+        const API_BASE_URL = window.location.origin;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Hide previous messages
+            messageDiv.style.display = 'none';
+            responseDetailsDiv.style.display = 'none';
+
+            // Get form data
+            const formData = {
+                studentName: document.getElementById('studentName').value.trim(),
+                score: parseFloat(document.getElementById('score').value),
+                courseId: parseInt(document.getElementById('courseId').value)
+            };
+
+            // Validate form data
+            if (!formData.studentName) {
+                showMessage('Student name is required', 'error');
+                return;
+            }
+
+            if (isNaN(formData.score) || formData.score < 0) {
+                showMessage('Score must be 0 or higher', 'error');
+                return;
+            }
+
+            if (isNaN(formData.courseId)) {
+                showMessage('Course ID is required', 'error');
+                return;
+            }
+
+            // Show loading
+            loadingDiv.style.display = 'block';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/marks`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                loadingDiv.style.display = 'none';
+
+                if (response.ok) {
+                    const data = await response.json();
+                    showMessage('Mark created successfully! ✅', 'success');
+                    displayResponseDetails(data);
+                    form.reset();
+                } else {
+                    const errorText = await response.text();
+                    let errorMessage = 'Failed to create mark';
+
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        errorMessage = errorJson.message || errorJson.error || errorMessage;
+                    } catch (e) {
+                        errorMessage = errorText || errorMessage;
+                    }
+
+                    showMessage(`Error: ${errorMessage}`, 'error');
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                showMessage(`Network error: ${error.message}`, 'error');
+                console.error('Error:', error);
+            }
+        });
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+
+        function displayResponseDetails(data) {
+            const formatDate = (dateString) => {
+                if (!dateString) return 'N/A';
+                const date = new Date(dateString);
+                return date.toLocaleString();
+            };
+
+            responseDetailsDiv.innerHTML = `
+                <h3>Created Mark Details:</h3>
+                <div class="response-item"><strong>Student Name:</strong> ${data.studentName || 'N/A'}</div>
+                <div class="response-item"><strong>Score:</strong> ${data.score !== undefined ? data.score : 'N/A'}</div>
+                <div class="response-item"><strong>Course ID:</strong> ${data.courseId || 'N/A'}</div>
+                <div class="response-item"><strong>Created Date:</strong> ${formatDate(data.createdDate)}</div>
+                <div class="response-item"><strong>Updated Date:</strong> ${formatDate(data.updatedDate)}</div>
+                <div class="response-item"><strong>Is Active:</strong> ${data.isActive !== undefined ? (data.isActive ? 'Yes' : 'No') : 'N/A'}</div>
+            `;
+            responseDetailsDiv.style.display = 'block';
+        }
+
+        // Reset button handler
+        form.addEventListener('reset', () => {
+            messageDiv.style.display = 'none';
+            responseDetailsDiv.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

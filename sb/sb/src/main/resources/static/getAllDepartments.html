@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>All Departments</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <nav>
@@ -33,7 +33,7 @@
 <script>
     async function loadDepartments() {
       try {
-        const res = await fetch("http://localhost:8080/getAllDepartments");
+        const res = await fetch("http://localhost:8080/departments");
         const data = await res.json();
         const tbody = document.querySelector("#departmentsTable tbody");
         tbody.innerHTML = "";

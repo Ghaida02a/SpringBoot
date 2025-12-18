@@ -1,11 +1,9 @@
 package com.codeline.sb.services;
 
 import com.codeline.sb.DTORequest.CourseCreateRequested;
+import com.codeline.sb.DTORequest.MarkRequestDTO;
 import com.codeline.sb.DTOResponse.CourseResponseDTO;
-import com.codeline.sb.Entities.Course;
-import com.codeline.sb.Entities.Department;
-import com.codeline.sb.Entities.Instructor;
-import com.codeline.sb.Entities.Mark;
+import com.codeline.sb.Entities.*;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.Helper.Utils;
 import com.codeline.sb.repositories.CourseRepository;
@@ -39,7 +37,7 @@ public class CourseService {
 
     // Get all active courses
     public List<Course> getAllCourses() {
-        if(Utils.isListNotEmpty(courseRepository.findAllActiveCourses())) {
+        if (Utils.isListNotEmpty(courseRepository.findAllActiveCourses())) {
             return courseRepository.findAllActiveCourses();
         } else {
 //            final String activeCoursesListEmpty = Constants.ACTIVE_COURSES_LIST_EMPTY;
@@ -48,7 +46,7 @@ public class CourseService {
         }
     }
 
-    public CourseResponseDTO saveCourse(CourseCreateRequested courseRequested){
+    public CourseResponseDTO saveCourse(CourseCreateRequested courseRequested) {
         Course course = CourseCreateRequested.convertDTOToEntity(courseRequested);
         course.setCreatedDate(new Date());
         course.setIsActive(Boolean.TRUE);
@@ -60,12 +58,12 @@ public class CourseService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_CREATE_REQUEST_INSTRUCTOR_ID_NOT_VALID);
         }
 
-        List<Mark> marks = markRepository.findAllMarksByIds(courseRequested.getMarks());
-        if (Utils.isNotNull(marks) && !marks.isEmpty()) {
-            course.setMarks(marks);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_CREATE_REQUEST_MARKS_NOT_VALID);
-        }
+//        List<Mark> marks = markRepository.findAllMarksByIds(courseRequested.getMarks());
+//        if (Utils.isNotNull(marks) && !marks.isEmpty()) {
+//            course.setMarks(marks);
+//        } else {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_CREATE_REQUEST_MARKS_NOT_VALID);
+//        }
 
         return CourseResponseDTO.entityToDTOResponse(courseRepository.save(course));
     }
@@ -109,9 +107,9 @@ public class CourseService {
         Course existingOpt = courseRepository.getCourseById(id);
 
         if (Utils.isNotNull(existingOpt)) {
-                existingOpt.setUpdatedDate(new Date());
-                existingOpt.setIsActive(Boolean.FALSE);
-                courseRepository.save(existingOpt);
+            existingOpt.setUpdatedDate(new Date());
+            existingOpt.setIsActive(Boolean.FALSE);
+            courseRepository.save(existingOpt);
         } else {
             throw new Exception(Constants.Not_Found);
         }
@@ -146,12 +144,21 @@ public class CourseService {
         // set instructor to course, whether existing or newly created
         course.setInstructor(instructor);
 
-        List<Mark> marks = markRepository.findAllMarksByIds(courseRequested.getMarks());
-        if (Utils.isNotNull(marks) && !marks.isEmpty()) {
+        if (Utils.isNotNull(courseRequested.getMarks()) && !courseRequested.getMarks().isEmpty()) {
+            List<Mark> marks = new ArrayList<>();
+            for (MarkRequestDTO markDTO : courseRequested.getMarks()) {
+                Mark mark = MarkRequestDTO.convertDTOToEntity(markDTO);
+                mark.setCourse(course);
+                mark.setIsActive(Boolean.TRUE);
+                mark.setCreatedDate(new Date());
+                // Save mark to mark table
+                Mark savedMark = markRepository.save(mark);
+                marks.add(savedMark);
+            }
+
             course.setMarks(marks);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_CREATE_REQUEST_MARKS_NOT_VALID);
         }
+
         Course savedCourse = courseRepository.save(course);
 
         return CourseResponseDTO.entityToDTOResponse(savedCourse);

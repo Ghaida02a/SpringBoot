@@ -27,7 +27,7 @@ public class CourseCreateRequested {
 
     private Integer instructorId;
     private Integer departmentId;
-    private List<String> marks;
+    private List<MarkRequestDTO> marks;
 
     //Validation
     public static void validateCourseCreateRequested(CourseCreateRequested dto) {

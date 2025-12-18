@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>View Marks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <title>View All Marks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Menu -->
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createCourse.html">➕ Add Course</a>
+    <a href="updateCourse.html">✏️ Update Course</a>
+    <a href="getCourseById.html">🔍 Get Course By ID</a>
+    <a href="deleteCourse.html">🗑️ Delete Course</a>
+    <a href="getAllCourses.html">📋 View All Courses</a>
+</nav>
+
+<h1>All Marks</h1>
+<table id="marksTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Student Name</th>
+        <th>Score</th>
+        <th>Course ID</th>
+        <th>Created Date</th>
+        <th>Updated Date</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    const tableBody = document.querySelector("#marksTable tbody");
+
+    async function refreshMarks() {
+      try {
+        const res = await fetch("http://localhost:8080/marks");
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        // Check if data is an array, if not, it might be wrapped in an object
+        const marks = Array.isArray(data) ? data : (data.marks || data.data || []);
+
+        tableBody.innerHTML = "";
+
+        if (!Array.isArray(marks) || marks.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="7">No marks found</td></tr>`;
+          return;
+        }
+
+        marks.forEach(mark => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${mark.id}</td>
+            <td>${mark.studentName ?? "—"}</td>
+            <td>${mark.score ?? "—"}</td>
+            <td>${mark.courseId ?? "—"}</td>
+            <td>${formatDate(mark.createdDate)}</td>
+            <td>${formatDate(mark.updatedDate)}</td>
+            <td>${mark.isActive ? "Active" : "Inactive"}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (err) {
+        tableBody.innerHTML = `<tr><td colspan="7">Failed to load marks: ${err}</td></tr>`;
+      }
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      return isNaN(d) ? "—" : d.toLocaleString();
+    }
+
+    // Load marks on page load
+    refreshMarks();
+</script>
+</body>
+</html>

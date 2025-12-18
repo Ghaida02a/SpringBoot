@@ -24,7 +24,7 @@ public class MarkService {
 
     // Get all Marks
     public List<Mark> getAllMarks() {
-        List<Mark> allMarks = markRepository.findAll();
+        List<Mark> allMarks = markRepository.findAllActiveMarks();
         return allMarks;
 
     }
@@ -50,5 +50,30 @@ public class MarkService {
     public MarkResponseDTO getMarkById(Integer id) throws Exception {
         Mark mark = markRepository.findById(id).orElseThrow(() -> new Exception(Constants.MARK_NOT_FOUND));
         return MarkResponseDTO.convertEntityToDTO(mark);
+    }
+
+    //Update Mark
+    public MarkResponseDTO updateMark(Integer id, MarkRequestDTO markRequestDTO) throws Exception {
+        Mark existingMark = markRepository.findById(id).orElseThrow(() -> new Exception(Constants.MARK_NOT_FOUND));
+        Mark updatedMark = MarkRequestDTO.convertDTOToEntity(markRequestDTO);
+        updatedMark.setId(existingMark.getId());
+        updatedMark.setCreatedDate(existingMark.getCreatedDate());
+        updatedMark.setUpdatedDate(new Date());
+        updatedMark.setIsActive(existingMark.getIsActive());
+        Course course = courseRepository.getCourseById(markRequestDTO.getCourseId());
+        if (Utils.isNotNull(course)) {
+            updatedMark.setCourse(course);
+        } else {
+            throw new RuntimeException(Constants.MARK_CREATE_REQUEST_COURSE_ID_NOT_VALID);
+        }
+        return MarkResponseDTO.convertEntityToDTO(markRepository.save(updatedMark));
+    }
+
+    //Delete Mark
+    public void deleteMark(Integer id) throws Exception {
+        Mark existingMark = markRepository.findById(id).orElseThrow(() -> new Exception(Constants.MARK_NOT_FOUND));
+        existingMark.setUpdatedDate(new Date());
+        existingMark.setIsActive(Boolean.FALSE);
+        markRepository.save(existingMark);
     }
 }

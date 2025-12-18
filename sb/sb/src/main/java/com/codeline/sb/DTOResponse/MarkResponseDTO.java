@@ -30,7 +30,7 @@ public class MarkResponseDTO {
                 .createdDate(mark.getCreatedDate())
                 .updatedDate(mark.getUpdatedDate())
                 .isActive(mark.getIsActive())
-                .courseId(mark.getCourse().getId())
+                .courseId(mark.getCourse() != null ? mark.getCourse().getId() : null)
                 .build();
     }
 

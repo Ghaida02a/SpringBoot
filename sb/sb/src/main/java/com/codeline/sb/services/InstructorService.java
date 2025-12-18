@@ -68,17 +68,11 @@ public class InstructorService {
     }
 
     public List<Instructor> getAllInstructors() {
-        List<Instructor> activeInstructors = new ArrayList<>();
-        if (!instructorRepository.findAll().isEmpty()){
-            for (Instructor instructor : instructorRepository.findAll()) {
-                if (Boolean.TRUE.equals(instructor.getIsActive())) {
-                    activeInstructors.add(instructor);
-                }
-            }
+        if (Utils.isListNotEmpty(instructorRepository.findAllActiveInstructors())) {
+            return instructorRepository.findAllActiveInstructors();
         } else {
-            System.out.println(Constants.No_Data_Found);
+            return new ArrayList<>();
         }
-        return activeInstructors;
     }
 
     public Instructor getInstructorById(int id) {

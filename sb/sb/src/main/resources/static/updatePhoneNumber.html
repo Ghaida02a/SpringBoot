@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Phone Number</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="updatePhoneNumber.html">✏️ Update Phone Number</a>
+    <a href="deletePhoneNumber.html">🗑️ Delete Phone Number</a>
+</nav>
+
+<main>
+    <h1>Update a Phone Number</h1>
+    <form id="updateForm">
+        <label for="phoneNumberId">Phone Number ID:</label>
+        <input type="number" id="phoneNumberId" name="phoneNumberId" required/>
+
+        <label for="phoneNumber">New Phone Number:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" required/>
+
+        <label for="countryCode">New Country Code:</label>
+        <input type="text" id="countryCode" name="countryCode" placeholder="e.g., +1, +44, +91" required/>
+
+        <label for="isLandLine">Is Land Line:</label>
+        <select id="isLandLine" name="isLandLine" required>
+            <option value="">-- Select --</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+
+        <label for="studentId">Student ID:</label>
+        <input type="number" id="studentId" name="studentId" required/>
+
+        <button type="submit">Update Phone Number</button>
+        <button type="button" onclick="refreshForm()">🔄 Refresh</button>
+    </form>
+    <div id="response"></div>
+</main>
+
+<script>
+    const form = document.getElementById("updateForm");
+    const responseBox = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("phoneNumberId").value;
+      const phoneNumber = document.getElementById("phoneNumber").value;
+      const countryCode = document.getElementById("countryCode").value;
+      const isLandLine = document.getElementById("isLandLine").value === "true";
+      const studentId = document.getElementById("studentId").value;
+
+      const phoneNumberData = {
+        phoneNumber: phoneNumber,
+        countryCode: countryCode,
+        isLandLine: isLandLine,
+        studentId: parseInt(studentId)
+      };
+
+      try {
+        const res = await fetch(`http://localhost:8080/phoneNumber/${id}/update`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(phoneNumberData)
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          responseBox.innerHTML = `
+            <strong>Phone Number updated successfully!</strong><br>
+            <strong>Phone Number:</strong> ${data.phoneNumber}<br>
+            <strong>Country Code:</strong> ${data.countryCode}<br>
+            <strong>Is Land Line:</strong> ${data.isLandLine ? 'Yes' : 'No'}<br>
+            <strong>Is Active:</strong> ${data.isActive ? 'Yes' : 'No'}<br>
+            <strong>Updated Date:</strong> ${new Date(data.updatedDate).toLocaleString()}
+          `;
+          responseBox.style.color = "green";
+        } else {
+          const errorText = await res.text();
+          responseBox.textContent = "Error: " + errorText;
+          responseBox.style.color = "red";
+        }
+        responseBox.style.display = "block";
+      } catch (err) {
+        responseBox.textContent = "Error updating phone number: " + err;
+        responseBox.style.color = "red";
+        responseBox.style.display = "block";
+      }
+    });
+
+    function refreshForm() {
+      form.reset();
+      responseBox.style.display = "none";
+    }
+</script>
+</body>
+</html>
