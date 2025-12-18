@@ -27,6 +27,8 @@ public class CourseCreateRequested {
 
     private Integer instructorId;
     private Integer departmentId;
+    private InstructorCreateRequested instructor;
+    private DepartmentCreateRequested department;
     private List<MarkRequestDTO> marks;
 
     //Validation
@@ -37,12 +39,7 @@ public class CourseCreateRequested {
         if (Utils.isNull(dto.getHours()) || dto.getHours() <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_HOURS_NOT_VALID);
         }
-        if (Utils.isNull(dto.getInstructorId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_CREATE_REQUEST_INSTRUCTOR_ID_NOT_VALID);
-        }
-        if (Utils.isNull(dto.getMarks())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_CREATE_REQUEST_MARKS_NOT_VALID);
-        }
+        // instructorId and marks are optional for createCourseWithRelations
     }
 
 

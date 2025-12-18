@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Course with Relations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f3f4f6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        nav a {
+            margin-right: 10px;
+        }
+        .form-section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .form-section h3 {
+            color: #374151;
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #BC8F8F;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #BC8F8F;
+            box-shadow: 0 0 0 3px rgba(188, 143, 143, 0.1);
+        }
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        button[type="submit"] {
+            background: #BC8F8F;
+            color: white;
+            flex: 1;
+        }
+        button[type="submit"]:hover {
+            background: #A52A2A;
+        }
+        button[type="button"] {
+            background: #6b7280;
+            color: white;
+        }
+        button[type="button"]:hover {
+            background: #4b5563;
+        }
+        .add-btn {
+            background: #10b981 !important;
+            color: white;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        .add-btn:hover {
+            background: #059669 !important;
+        }
+        .remove-btn {
+            background: #ef4444 !important;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .remove-btn:hover {
+            background: #dc2626 !important;
+        }
+        pre {
+            background: #f9fafb;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success {
+            color: #059669;
+            background: #d1fae5;
+            border-color: #6ee7b7;
+        }
+        .error {
+            color: #dc2626;
+            background: #fee2e2;
+            border-color: #fca5a5;
+        }
+        .mark-entry {
+            background: #f9fafb;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+        .mark-entry:first-child {
+            margin-top: 10px;
+        }
+        .info-text {
+            color: #6b7280;
+            font-size: 13px;
+            font-style: italic;
+            margin: 8px 0;
+        }
+        .option-divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        .option-divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e5e7eb;
+        }
+        .option-divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            color: #6b7280;
+            font-weight: bold;
+        }
+        .toggle-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fef3c7;
+            border-radius: 6px;
+            border: 1px solid #fbbf24;
+        }
+        .toggle-section label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin: 0;
+        }
+        .toggle-section input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        .hidden-section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="createCourse.html">➕ Add Course</a>
+    <a href="createCourseWithRelations.html">➕ Add Course (Full)</a>
+    <a href="updateCourse.html">✏️ Update Course</a>
+    <a href="getCourseById.html">🔍 Get Course By ID</a>
+    <a href="deleteCourse.html">🗑️ Delete Course</a>
+    <a href="getAllCourses.html">📋 View All Courses</a>
+</nav>
+
+<div class="container">
+    <h1>Create Course</h1>
+
+    <form id="courseForm">
+        <!-- Course Information -->
+        <div class="form-section">
+            <h3>📚 Course Information</h3>
+            <label for="name">Course Name: <span style="color: red;">*</span></label>
+            <input type="text" id="name" name="name" required placeholder="e.g., Introduction to Computer Science" />
+
+            <label for="hours">Course Hours: <span style="color: red;">*</span></label>
+            <input type="number" id="hours" name="hours" step="0.5" min="0" required placeholder="e.g., 3.0" />
+        </div>
+
+        <!-- Instructor Information -->
+        <div class="form-section">
+            <h3>👨‍🏫 Instructor Information</h3>
+            <p class="info-text">Choose an existing instructor OR create a new one</p>
+
+            <label for="instructorId">Existing Instructor ID:</label>
+            <input type="number" id="instructorId" name="instructorId" placeholder="Enter instructor ID if using existing instructor" />
+
+            <div class="option-divider">
+                <span>OR CREATE NEW INSTRUCTOR</span>
+            </div>
+
+            <div class="toggle-section">
+                <label>
+                    <input type="checkbox" id="toggleNewInstructor" />
+                    <span>Create New Instructor</span>
+                </label>
+            </div>
+
+            <div id="newInstructorSection" class="hidden-section">
+                <label for="instructorName">Instructor Name:</label>
+                <input type="text" id="instructorName" name="instructorName" placeholder="e.g., Dr. John Smith" />
+
+                <label for="instructorEmail">Instructor Email:</label>
+                <input type="email" id="instructorEmail" name="instructorEmail" placeholder="e.g., john.smith@university.edu" />
+
+                <label for="instructorPhone">Instructor Phone Number:</label>
+                <input type="text" id="instructorPhone" name="instructorPhone" placeholder="e.g., +1-234-567-8900" />
+
+                <label for="instructorDesignation">Instructor Designation:</label>
+                <input type="text" id="instructorDesignation" name="instructorDesignation" placeholder="e.g., Professor, Associate Professor" />
+            </div>
+        </div>
+
+        <!-- Department Information -->
+        <div class="form-section">
+            <h3>🏢 Department Information</h3>
+            <p class="info-text">Choose an existing department OR create a new one</p>
+
+            <label for="departmentId">Existing Department ID:</label>
+            <input type="number" id="departmentId" name="departmentId" placeholder="Enter department ID if using existing department" />
+
+            <div class="option-divider">
+                <span>OR CREATE NEW DEPARTMENT</span>
+            </div>
+
+            <div class="toggle-section">
+                <label>
+                    <input type="checkbox" id="toggleNewDepartment" />
+                    <span>Create New Department</span>
+                </label>
+            </div>
+
+            <div id="newDepartmentSection" class="hidden-section">
+                <label for="departmentName">Department Name:</label>
+                <input type="text" id="departmentName" name="departmentName" placeholder="e.g., Computer Science Department" />
+            </div>
+        </div>
+
+        <!-- Marks Information -->
+        <div class="form-section">
+            <h3>📊 Student Marks</h3>
+            <p class="info-text">Add student marks for this course (optional)</p>
+
+            <div id="marksContainer">
+                <div class="mark-entry">
+                    <label>Student Name:</label>
+                    <input type="text" class="studentName" placeholder="e.g., Alice Johnson" />
+                    <label>Score:</label>
+                    <input type="number" class="score" placeholder="e.g., 85.5" step="0.1" min="0" max="100" />
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addMarkField()">➕ Add Another Student Mark</button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-section">
+            <div class="button-group">
+                <button type="submit">✅ Create Course with Relations</button>
+                <button type="button" onclick="refreshForm()">🔄 Reset Form</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="form-section">
+        <h3>📤 Response:</h3>
+        <pre id="response">Response will appear here...</pre>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById("courseForm");
+    const responseBox = document.getElementById("response");
+
+    // Toggle sections
+    document.getElementById("toggleNewInstructor").addEventListener("change", function() {
+        const section = document.getElementById("newInstructorSection");
+        if (this.checked) {
+            section.classList.remove("hidden-section");
+            // Clear instructor ID when creating new
+            document.getElementById("instructorId").value = "";
+        } else {
+            section.classList.add("hidden-section");
+        }
+    });
+
+    document.getElementById("toggleNewDepartment").addEventListener("change", function() {
+        const section = document.getElementById("newDepartmentSection");
+        if (this.checked) {
+            section.classList.remove("hidden-section");
+            // Clear department ID when creating new
+            document.getElementById("departmentId").value = "";
+        } else {
+            section.classList.add("hidden-section");
+        }
+    });
+
+    // Function to add more mark fields
+    function addMarkField() {
+        const marksContainer = document.getElementById("marksContainer");
+        const newMarkEntry = document.createElement("div");
+        newMarkEntry.className = "mark-entry";
+        newMarkEntry.innerHTML = `
+            <label>Student Name:</label>
+            <input type="text" class="studentName" placeholder="e.g., Bob Williams" />
+            <label>Score:</label>
+            <input type="number" class="score" placeholder="e.g., 92.0" step="0.1" min="0" max="100" />
+            <button type="button" class="remove-btn" onclick="this.parentElement.remove()">❌ Remove</button>
+        `;
+        marksContainer.appendChild(newMarkEntry);
+    }
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const hours = parseFloat(document.getElementById("hours").value);
+
+        // Validate required fields
+        if (!name || !hours || hours <= 0) {
+            responseBox.textContent = "Error: Course name and valid hours are required!";
+            responseBox.className = "error";
+            responseBox.style.display = "block";
+            return;
+        }
+
+        // Instructor data
+        const instructorId = document.getElementById("instructorId").value
+            ? parseInt(document.getElementById("instructorId").value)
+            : null;
+        const instructorName = document.getElementById("instructorName").value.trim();
+        const instructorEmail = document.getElementById("instructorEmail").value.trim();
+        const instructorPhone = document.getElementById("instructorPhone").value.trim();
+        const instructorDesignation = document.getElementById("instructorDesignation").value.trim();
+
+        // Department data
+        const departmentId = document.getElementById("departmentId").value
+            ? parseInt(document.getElementById("departmentId").value)
+            : null;
+        const departmentName = document.getElementById("departmentName").value.trim();
+
+        // Collect all marks
+        const markEntries = document.querySelectorAll(".mark-entry");
+        const marks = [];
+        markEntries.forEach(entry => {
+            const studentName = entry.querySelector(".studentName").value.trim();
+            const scoreValue = entry.querySelector(".score").value;
+            const score = scoreValue ? parseFloat(scoreValue) : null;
+            if (studentName && score !== null && !isNaN(score)) {
+                marks.push({
+                    studentName: studentName,
+                    score: score
+                });
+            }
+        });
+
+        // Build payload
+        const payload = {
+            name: name,
+            hours: hours
+        };
+
+        // Add instructorId if provided
+        if (instructorId) {
+            payload.instructorId = instructorId;
+        }
+
+        // Add instructor object if new instructor data is provided
+        if (instructorName && instructorEmail && instructorPhone && instructorDesignation) {
+            payload.instructor = {
+                name: instructorName,
+                email: instructorEmail,
+                phoneNumber: instructorPhone,
+                designation: instructorDesignation
+            };
+        }
+
+        // Add departmentId if provided
+        if (departmentId) {
+            payload.departmentId = departmentId;
+        }
+
+        // Add department object if new department data is provided
+        if (departmentName) {
+            payload.department = {
+                name: departmentName
+            };
+        }
+
+        // Add marks if any
+        if (marks.length > 0) {
+            payload.marks = marks;
+        }
+
+        console.log("Sending payload:", JSON.stringify(payload, null, 2));
+
+        try {
+            const res = await fetch("http://localhost:8080/courses/addFullCourse", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            console.log("Response status:", res.status);
+            console.log("Response ok:", res.ok);
+
+            if (res.ok) {
+                const data = await res.json();
+                console.log("Success response:", data);
+
+                // Format success response in a user-friendly way
+                let successMessage = "✅ COURSE CREATED SUCCESSFULLY!\n\n";
+                successMessage += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                successMessage += `📚 Course Name: ${data.name}\n`;
+                successMessage += `⏰ Hours: ${data.hours}\n`;
+                successMessage += `✓ Status: ${data.isActive ? 'Active' : 'Inactive'}\n`;
+                successMessage += `📅 Created: ${new Date(data.createdDate).toLocaleString()}\n`;
+
+                if (data.instructor) {
+                    successMessage += `\n👨‍🏫 Instructor:\n`;
+                    successMessage += `   • ID: ${data.instructor.id}\n`;
+                    successMessage += `   • Name: ${data.instructor.name}\n`;
+                }
+
+                if (data.marks && data.marks.length > 0) {
+                    successMessage += `\n📊 Student Marks (${data.marks.length}):\n`;
+                    data.marks.forEach((mark, index) => {
+                        successMessage += `   ${index + 1}. ${mark.studentName}: ${mark.score} points\n`;
+                    });
+                }
+
+                successMessage += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+                successMessage += `\n📋 Full Response (JSON):\n`;
+                successMessage += JSON.stringify(data, null, 2);
+
+                responseBox.textContent = successMessage;
+                responseBox.className = "success";
+
+                // Optionally reset form after success
+                setTimeout(() => {
+                    if (confirm("Course created successfully! Do you want to reset the form?")) {
+                        refreshForm();
+                    }
+                }, 1500);
+            } else {
+                // Try to get error response as text first
+                const errorText = await res.text();
+                console.log("Error response text:", errorText);
+                try {
+                    // Try to parse as JSON for better formatting
+                    const errorData = JSON.parse(errorText);
+                    responseBox.textContent = "❌ ERROR!\n\n" + JSON.stringify(errorData, null, 2);
+                } catch {
+                    // If not JSON, display as plain text
+                    responseBox.textContent = "❌ ERROR!\n\n" + errorText;
+                }
+                responseBox.className = "error";
+            }
+
+            responseBox.style.display = "block";
+        } catch (err) {
+            console.error("Fetch error:", err);
+            responseBox.textContent = "❌ NETWORK ERROR!\n\nError creating course: " + err.message;
+            responseBox.className = "error";
+            responseBox.style.display = "block";
+        }
+    });
+
+    function refreshForm() {
+        form.reset();
+        responseBox.textContent = "Response will appear here...";
+        responseBox.className = "";
+        responseBox.style.display = "block";
+
+        // Reset toggles
+        document.getElementById("toggleNewInstructor").checked = false;
+        document.getElementById("toggleNewDepartment").checked = false;
+        document.getElementById("newInstructorSection").classList.add("hidden-section");
+        document.getElementById("newDepartmentSection").classList.add("hidden-section");
+
+        // Reset to one mark entry
+        const marksContainer = document.getElementById("marksContainer");
+        marksContainer.innerHTML = `
+            <div class="mark-entry">
+                <label>Student Name:</label>
+                <input type="text" class="studentName" placeholder="e.g., Alice Johnson" />
+                <label>Score:</label>
+                <input type="number" class="score" placeholder="e.g., 85.5" step="0.1" min="0" max="100" />
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>

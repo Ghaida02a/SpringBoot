@@ -34,11 +34,32 @@
     <label for="hours">Course Hours:</label>
     <input type="number" id="hours" name="hours" step="0.5" />
 
-    <label for="instructorId">Instructor ID:</label>
+    <h3>Instructor Information:</h3>
+    <label for="instructorId">Existing Instructor ID (optional):</label>
     <input type="number" id="instructorId" name="instructorId" />
 
-    <label for="departmentId">Department ID (optional):</label>
+    <p><em>OR create a new instructor:</em></p>
+
+    <label for="instructorName">Instructor Name:</label>
+    <input type="text" id="instructorName" name="instructorName" />
+
+    <label for="instructorEmail">Instructor Email:</label>
+    <input type="email" id="instructorEmail" name="instructorEmail" />
+
+    <label for="instructorPhone">Instructor Phone:</label>
+    <input type="text" id="instructorPhone" name="instructorPhone" />
+
+    <label for="instructorDesignation">Instructor Designation:</label>
+    <input type="text" id="instructorDesignation" name="instructorDesignation" />
+
+    <h3>Department Information:</h3>
+    <label for="departmentId">Existing Department ID (optional):</label>
     <input type="number" id="departmentId" name="departmentId" />
+
+    <p><em>OR create a new department:</em></p>
+
+    <label for="departmentName">Department Name:</label>
+    <input type="text" id="departmentName" name="departmentName" />
 
     <h3>Add Marks:</h3>
     <div id="marksContainer">
@@ -83,10 +104,21 @@
 
       const name = document.getElementById("name").value;
       const hours = parseFloat(document.getElementById("hours").value);
+
+      // Instructor data
+      const instructorId = document.getElementById("instructorId").value
+        ? parseInt(document.getElementById("instructorId").value)
+        : null;
       const instructorName = document.getElementById("instructorName").value;
+      const instructorEmail = document.getElementById("instructorEmail").value;
+      const instructorPhone = document.getElementById("instructorPhone").value;
+      const instructorDesignation = document.getElementById("instructorDesignation").value;
+
+      // Department data
       const departmentId = document.getElementById("departmentId").value
         ? parseInt(document.getElementById("departmentId").value)
         : null;
+      const departmentName = document.getElementById("departmentName").value;
 
       // Collect all marks
       const markEntries = document.querySelectorAll(".mark-entry");
@@ -102,13 +134,33 @@
         }
       });
 
+      // Build payload
       const payload = {
         name: name,
         hours: hours,
-        instructorName: instructorName,
+        instructorId: instructorId,
         departmentId: departmentId,
         marks: marks
       };
+
+      // Add instructor object if new instructor data is provided
+      if (instructorName && instructorEmail && instructorPhone && instructorDesignation) {
+        payload.instructor = {
+          name: instructorName,
+          email: instructorEmail,
+          phoneNumber: instructorPhone,
+          designation: instructorDesignation
+        };
+      }
+
+      // Add department object if new department data is provided
+      if (departmentName) {
+        payload.department = {
+          name: departmentName
+        };
+      }
+
+      console.log("Sending payload:", JSON.stringify(payload, null, 2));
 
       try {
         const res = await fetch("http://localhost:8080/courses/addFullCourse", {
@@ -117,22 +169,32 @@
           body: JSON.stringify(payload)
         });
 
+        console.log("Response status:", res.status);
+        console.log("Response ok:", res.ok);
+
         if (res.ok) {
           const data = await res.json();
+          console.log("Success response:", data);
           responseBox.textContent = JSON.stringify(data, null, 2);
           responseBox.className = "success";
         } else {
-          const errorData = await res.json().catch(() => null);
-          if (errorData) {
+          // Try to get error response as text first
+          const errorText = await res.text();
+          console.log("Error response text:", errorText);
+          try {
+            // Try to parse as JSON for better formatting
+            const errorData = JSON.parse(errorText);
             responseBox.textContent = JSON.stringify(errorData, null, 2);
-          } else {
-            responseBox.textContent = await res.text();
+          } catch {
+            // If not JSON, display as plain text
+            responseBox.textContent = errorText;
           }
           responseBox.className = "error";
         }
 
         responseBox.style.display = "block";
       } catch (err) {
+        console.error("Fetch error:", err);
         responseBox.textContent = "Error creating course: " + err;
         responseBox.className = "error";
         responseBox.style.display = "block";

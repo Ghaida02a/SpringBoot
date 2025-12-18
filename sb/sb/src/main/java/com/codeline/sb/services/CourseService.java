@@ -120,29 +120,52 @@ public class CourseService {
         course.setCreatedDate(new Date());
         course.setIsActive(Boolean.TRUE);
 
-        Instructor instructor = instructorRepository.getInstructorById(courseRequested.getInstructorId());
-        //if instructor not found, create new instructor
-        if (Utils.isNull(instructor)) {
+        Instructor instructor = null;
+
+        // Check if instructorId is provided, try to find existing instructor
+        if (Utils.isNotNull(courseRequested.getInstructorId())) {
+            instructor = instructorRepository.getInstructorById(courseRequested.getInstructorId());
+        }
+
+        // If instructor not found and instructor data is provided, create new instructor
+        if (Utils.isNull(instructor) && Utils.isNotNull(courseRequested.getInstructor())) {
             Instructor newInstructor = new Instructor();
-            newInstructor.setName(courseRequested.getName());
+            newInstructor.setName(courseRequested.getInstructor().getName());
+            newInstructor.setEmail(courseRequested.getInstructor().getEmail());
+            newInstructor.setPhoneNumber(courseRequested.getInstructor().getPhoneNumber());
+            newInstructor.setDesignation(courseRequested.getInstructor().getDesignation());
             newInstructor.setCreatedDate(new Date());
             newInstructor.setIsActive(Boolean.TRUE);
 
-            // Department, check if exists, else create new
-            Department department = departmentRepository.getDepartmentById(courseRequested.getDepartmentId());
-            if (Utils.isNull(department)) {
+            // Handle Department
+            Department department = null;
+
+            // Check if departmentId is provided, try to find existing department
+            if (Utils.isNotNull(courseRequested.getDepartmentId())) {
+                department = departmentRepository.getDepartmentById(courseRequested.getDepartmentId());
+            }
+
+            // If department not found and department data is provided, create new department
+            if (Utils.isNull(department) && Utils.isNotNull(courseRequested.getDepartment())) {
                 Department newDepartment = new Department();
-                newDepartment.setName(courseRequested.getName());
+                newDepartment.setName(courseRequested.getDepartment().getName());
                 newDepartment.setCreatedDate(new Date());
                 newDepartment.setIsActive(Boolean.TRUE);
                 department = departmentRepository.save(newDepartment);
             }
-            newInstructor.setDepartment(department);
+
+            // Set department to instructor if available
+            if (Utils.isNotNull(department)) {
+                newInstructor.setDepartment(department);
+            }
 
             instructor = instructorRepository.save(newInstructor);
         }
-        // set instructor to course, whether existing or newly created
-        course.setInstructor(instructor);
+
+        // Set instructor to course if available
+        if (Utils.isNotNull(instructor)) {
+            course.setInstructor(instructor);
+        }
 
         if (Utils.isNotNull(courseRequested.getMarks()) && !courseRequested.getMarks().isEmpty()) {
             List<Mark> marks = new ArrayList<>();
