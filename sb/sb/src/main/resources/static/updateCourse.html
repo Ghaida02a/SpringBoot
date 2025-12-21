@@ -115,13 +115,13 @@
     <h1>Update a Course</h1>
     <form id="updateForm">
         <label for="courseId">Course ID:</label>
-        <input type="number" id="courseId" name="courseId" required />
+        <input type="number" id="courseId" name="courseId" />
 
         <label for="courseName">New Course Name:</label>
-        <input type="text" id="courseName" name="courseName" required />
+        <input type="text" id="courseName" name="courseName" />
 
         <label for="courseHours">New Course Hours:</label>
-        <input type="number" id="courseHours" name="courseHours" step="0.5" required />
+        <input type="number" id="courseHours" name="courseHours" step="0.5" />
 
         <button type="submit">Update Course</button>
         <button type="button" onclick="refreshForm()">🔄 Refresh</button>
@@ -146,7 +146,7 @@
       };
 
       try {
-        const res = await fetch("http://localhost:8080/courses", {
+        const res = await fetch(`http://localhost:8080/courses/${id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(course)
