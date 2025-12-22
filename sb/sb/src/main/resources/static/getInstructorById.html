@@ -21,10 +21,38 @@
 
 <script>
     async function search() {
+      const searchId = document.getElementById('searchId');
+      const result = document.getElementById('result');
       const id = searchId.value;
-      const res = await fetch(`http://localhost:8080/getInstructorById/${id}`);
-      const data = await res.json();
-      result.textContent = `ID: ${data.id}, Name: ${data.name}, Email: ${data.email}, Phone: ${data.phoneNumber}, Designation: ${data.designation}`;
+      if (!id) {
+        result.textContent = 'Please enter an ID';
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:8080/instructors/${id}`);
+        if (!res.ok) {
+          result.textContent = `Error: Instructor with ID ${id} not found`;
+          return;
+        }
+
+        const data = await res.json();
+        console.log('API Response:', data); // Debug log
+
+        result.innerHTML = `
+          <div style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+            <p><strong>Name:</strong> ${data.name || 'N/A'}</p>
+            <p><strong>Email:</strong> ${data.email || 'N/A'}</p>
+            <p><strong>Phone:</strong> ${data.phoneNumber || 'N/A'}</p>
+            <p><strong>Designation:</strong> ${data.designation || 'N/A'}</p>
+            <p><strong>Active:</strong> ${data.isActive !== undefined ? (data.isActive ? 'Yes' : 'No') : 'N/A'}</p>
+            <p><strong>Created Date:</strong> ${data.createdDate ? new Date(data.createdDate).toLocaleString() : 'N/A'}</p>
+            <p><strong>Updated Date:</strong> ${data.updatedDate ? new Date(data.updatedDate).toLocaleString() : 'N/A'}</p>
+          </div>
+        `;
+      } catch (error) {
+        result.textContent = `Error: ${error.message}`;
+      }
     }
 </script>
 </body>

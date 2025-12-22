@@ -82,16 +82,23 @@ public class InstructorService {
     public String updateInstructor(Instructor instructor) throws Exception {
         Instructor existingInstructor = instructorRepository.findById(instructor.getId()).get();
 
-        if (existingInstructor != null && existingInstructor.getIsActive()) {
-            existingInstructor.setName(instructor.getName());
-            existingInstructor.setEmail(instructor.getEmail());
-            existingInstructor.setPhoneNumber(instructor.getPhoneNumber());
-            existingInstructor.setDesignation(instructor.getDesignation());
+        if (Utils.isNotNull(existingInstructor) && existingInstructor.getIsActive()) {
+            // Only update fields that are not null or empty
+            if (Utils.isNotNull(instructor.getName()) && !instructor.getName().trim().isEmpty()) {
+                existingInstructor.setName(instructor.getName());
+            }
+            if (Utils.isNotNull(instructor.getEmail()) && !instructor.getEmail().trim().isEmpty()) {
+                existingInstructor.setEmail(instructor.getEmail());
+            }
+            if (Utils.isNotNull(instructor.getPhoneNumber()) && !instructor.getPhoneNumber().trim().isEmpty()) {
+                existingInstructor.setPhoneNumber(instructor.getPhoneNumber());
+            }
+            if (Utils.isNotNull(instructor.getDesignation()) && !instructor.getDesignation().trim().isEmpty()) {
+                existingInstructor.setDesignation(instructor.getDesignation());
+            }
             existingInstructor.setUpdatedDate(new Date());
             existingInstructor.setIsActive(Boolean.TRUE);
-//            instructor.setUpdatedDate(new Date());
-//            instructor.setIsActive(Boolean.TRUE);
-            instructorRepository.save(instructor);
+            instructorRepository.save(existingInstructor);
             return Constants.Success;
         } else {
             throw new Exception(Constants.Bad_Request);

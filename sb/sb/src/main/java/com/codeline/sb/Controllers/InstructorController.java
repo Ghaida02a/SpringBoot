@@ -44,8 +44,9 @@ public class InstructorController {
 
     //get Instructor by id
     @GetMapping("/{id}")
-    public Instructor getInstructorById(@PathVariable int id) {
-        return instructorService.getInstructorById(id);
+    public InstructorResponseDTO getInstructorById(@PathVariable int id) {
+        Instructor instructor = instructorService.getInstructorById(id);
+        return InstructorResponseDTO.convertInstructorToDTOResponse(instructor);
     }
 
     //update Instructor

@@ -23,11 +23,33 @@
 
 <script>
     async function deleteInstructor() {
-      const id = deleteId.value;
-      const res = await fetch(`http://localhost:8080/deleteInstructor/${id}`, {
-        method: "DELETE"
-      });
-      response.textContent = await res.text();
+      try {
+        const id = document.getElementById('deleteId').value;
+        console.log('Deleting instructor with ID:', id);
+
+        const res = await fetch(`http://localhost:8080/instructors/${id}`, {
+          method: "DELETE"
+        });
+
+        console.log('Response status:', res.status);
+        console.log('Response ok:', res.ok);
+
+        if (res.ok) {
+          const text = await res.text();
+          console.log('Response text:', text);
+          document.getElementById('response').textContent = `✅ Instructor with ID ${id} deleted successfully!`;
+        } else {
+          document.getElementById('response').textContent = `❌ Error: ${res.status} - ${await res.text()}`;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('response').textContent = `❌ Error: ${error.message}`;
+      }
+    }
+
+    function refreshForm() {
+      document.getElementById('deleteId').value = '';
+      document.getElementById('response').textContent = '';
     }
 </script>
 </body>

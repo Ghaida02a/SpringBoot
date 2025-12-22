@@ -30,28 +30,37 @@
 <script>
     document.getElementById("updateForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-<!--      const instructor = {-->
-<!--        id: parseInt(id.value),-->
-<!--        name: name.value,-->
-<!--        email: email.value,-->
-<!--        phoneNumber: phoneNumber.value,-->
-<!--        designation: designation.value-->
-<!--      };-->
 
-const instructor = {
-  id: parseInt(document.getElementById("id").value),
-  name: document.getElementById("name").value,
-  email: document.getElementById("email").value,
-  phoneNumber: document.getElementById("phoneNumber").value,
-  designation: document.getElementById("designation").value
-};
+      const instructor = {
+        id: parseInt(document.getElementById("id").value)
+      };
 
-      const res = await fetch("http://localhost:8080/updateInstructor", {
+      // Only include fields that have values
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phoneNumber = document.getElementById("phoneNumber").value.trim();
+      const designation = document.getElementById("designation").value.trim();
+
+      if (name) instructor.name = name;
+      if (email) instructor.email = email;
+      if (phoneNumber) instructor.phoneNumber = phoneNumber;
+      if (designation) instructor.designation = designation;
+
+      const res = await fetch(`http://localhost:8080/instructors/${instructor.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(instructor)
       });
-      response.textContent = await res.text();
+
+      const responseDiv = document.getElementById("response");
+      if (res.ok) {
+        const data = await res.text();
+        responseDiv.textContent = "✅ Instructor updated successfully: " + data;
+        responseDiv.style.color = "green";
+      } else {
+        responseDiv.textContent = "❌ Error: " + res.status + " " + res.statusText;
+        responseDiv.style.color = "red";
+      }
     });
 </script>
 </body>
