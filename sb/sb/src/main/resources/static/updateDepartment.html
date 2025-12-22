@@ -32,11 +32,12 @@
 <script>
     document.getElementById("updateDepartmentForm").addEventListener("submit", async e => {
       e.preventDefault();
+      const id = document.getElementById("id").value;
       const department = {
-        id: document.getElementById("id").value,
+        id: id,
         name: document.getElementById("name").value
       };
-      const res = await fetch("http://localhost:8080/updateDepartment", {
+      const res = await fetch(`http://localhost:8080/departments/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(department)

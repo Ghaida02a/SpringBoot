@@ -29,15 +29,30 @@
     document.getElementById("createDepartmentForm").addEventListener("submit", async e => {
       e.preventDefault();
       const department = { name: document.getElementById("name").value };
-      const res = await fetch("http://localhost:8080/createDepartment", {
+      const res = await fetch("http://localhost:8080/departments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(department)
       });
-      const text = await res.text();
+      const data = await res.json();
       const responseDiv = document.getElementById("response");
       responseDiv.style.display = "block";
-      responseDiv.textContent = text;
+      if (res.ok) {
+        responseDiv.innerHTML = `
+          <strong>✅ Department Created Successfully!</strong><br>
+          <strong>ID:</strong> ${data.id}<br>
+          <strong>Name:</strong> ${data.name}<br>
+          <strong>Created Date:</strong> ${new Date(data.createdDate).toLocaleString()}<br>
+          <strong>Status:</strong> ${data.isActive ? 'Active' : 'Inactive'}
+        `;
+        responseDiv.style.background = "#D1FAE5";
+        responseDiv.style.color = "#065F46";
+        document.getElementById("createDepartmentForm").reset();
+      } else {
+        responseDiv.textContent = `❌ Error: ${data.message || 'Failed to create department'}`;
+        responseDiv.style.background = "#FEE2E2";
+        responseDiv.style.color = "#991B1B";
+      }
     });
 </script>
 </body>

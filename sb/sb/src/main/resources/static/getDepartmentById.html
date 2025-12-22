@@ -28,7 +28,7 @@
     document.getElementById("getDepartmentForm").addEventListener("submit", async e => {
       e.preventDefault();
       const id = document.getElementById("id").value;
-      const res = await fetch(`http://localhost:8080/getDepartmentById/${id}`);
+      const res = await fetch(`http://localhost:8080/departments/${id}`);
       const data = await res.json();
       const responseDiv = document.getElementById("response");
       responseDiv.style.display = "block";

@@ -4,6 +4,7 @@ import com.codeline.sb.DTORequest.DepartmentCreateRequested;
 import com.codeline.sb.DTOResponse.DepartmentResponseDTO;
 import com.codeline.sb.Entities.Department;
 import com.codeline.sb.Helper.Constants;
+import com.codeline.sb.Helper.Utils;
 import com.codeline.sb.repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,16 +46,14 @@ public class DepartmentService {
     }
 
     public String updateDepartment(Department department) throws Exception {
-        Department existingDepartment = departmentRepository.findById(department.getId()).get();
+        Department existingDepartment = departmentRepository.getDepartmentById(department.getId());
 
-        if (existingDepartment != null && existingDepartment.getIsActive()) {
+        if (Utils.isNotNull(existingDepartment) && existingDepartment.getIsActive()) {
 
             existingDepartment.setName(department.getName());
             existingDepartment.setUpdatedDate(new Date());
             existingDepartment.setIsActive(Boolean.TRUE);
-//            department.setUpdatedDate(new Date());
-//            department.setIsActive(Boolean.TRUE);
-            departmentRepository.save(department);
+            departmentRepository.save(existingDepartment);
             return Constants.Success;
         } else {
             throw new Exception(Constants.Bad_Request);
@@ -63,7 +62,7 @@ public class DepartmentService {
 
     public void deleteDepartment(Integer id) throws Exception {
         Department existingDepartment = departmentRepository.findById(id).get();
-        if (existingDepartment != null && existingDepartment.getIsActive()) {
+        if (Utils.isNotNull(existingDepartment) && existingDepartment.getIsActive()) {
             existingDepartment.setUpdatedDate(new Date());
             existingDepartment.setIsActive(Boolean.FALSE);
             departmentRepository.save(existingDepartment);
