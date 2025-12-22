@@ -24,8 +24,6 @@ public class AddressCreateResponse {
     private Date createdDate;
     private Date updatedDate;
 
-    private Student student;
-
     //Convert dto -> entity
     public static Address convertDTOToAddress(AddressCreateResponse dto) {
         return Address.builder()
@@ -38,7 +36,6 @@ public class AddressCreateResponse {
                 .isActive(dto.getIsActive())
                 .createdDate(dto.getCreatedDate())
                 .updatedDate(dto.getUpdatedDate())
-                .student(dto.getStudent())
                 .build();
     }
 
@@ -54,7 +51,6 @@ public class AddressCreateResponse {
                 .isActive(entity.getIsActive())
                 .createdDate(entity.getCreatedDate())
                 .updatedDate(entity.getUpdatedDate())
-                .student(entity.getStudent())
                 .build();
     }
 }

@@ -20,8 +20,6 @@ public class PhoneNumberCreateResponse {
     private Date createdDate;
     private Date updatedDate;
 
-    private StudentCreateResponse student;
-
     //Convert dto -> entity
     public static PhoneNumber convertDTOToPhoneNumber(PhoneNumberCreateResponse dto){
         return PhoneNumber.builder()
@@ -31,9 +29,6 @@ public class PhoneNumberCreateResponse {
                 .isActive(dto.getIsActive())
                 .createdDate(dto.getCreatedDate())
                 .updatedDate(dto.getUpdatedDate())
-                .student(dto.getStudent() != null
-                ? StudentCreateResponse.convertDTOToEntity(dto.getStudent())
-                : null)
                 .build();
     }
 
@@ -46,7 +41,6 @@ public class PhoneNumberCreateResponse {
                 .isActive(entity.getIsActive())
                 .createdDate(entity.getCreatedDate())
                 .updatedDate(entity.getUpdatedDate())
-                .student(StudentCreateResponse.convertStudentToDTO(entity.getStudent()))
                 .build();
     }
 }

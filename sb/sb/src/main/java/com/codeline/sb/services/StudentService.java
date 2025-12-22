@@ -74,7 +74,7 @@ public class StudentService {
 
     //Get Student by ID
     public Student getStudentById(int id) throws Exception {
-        Student student = studentRepository.getStudentById(id);
+        Student student = studentRepository.findById(id).get();
         if (Utils.isNull(student)) {
             throw new Exception(Constants.STUDENT_ID_IS_NOT_VALID);
         }

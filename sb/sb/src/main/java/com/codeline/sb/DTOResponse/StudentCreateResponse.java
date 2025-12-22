@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class StudentCreateResponse {
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
@@ -44,6 +45,7 @@ public class StudentCreateResponse {
     //Convert entity -> dto response
     public static StudentCreateResponse convertStudentToDTO(Student student){
         StudentCreateResponse response = new StudentCreateResponse();
+        response.setId(student.getId());
         response.setFirstName(student.getFirstName());
         response.setLastName(student.getLastName());
         response.setEmail(student.getEmail());
@@ -52,6 +54,21 @@ public class StudentCreateResponse {
         response.setIsActive(student.getIsActive());
         response.setCreatedDate(student.getCreatedDate());
         response.setUpdatedDate(student.getUpdatedDate());
+
+        // Convert phone numbers
+        if (student.getPhoneNumbers() != null) {
+            response.setPhoneNumbers(
+                student.getPhoneNumbers().stream()
+                    .map(PhoneNumberCreateResponse::convertPhoneNumberToDTO)
+                    .toList()
+            );
+        }
+
+        // Convert address
+        if (student.getAddress() != null) {
+            response.setAddress(AddressCreateResponse.convertAddressToDTO(student.getAddress()));
+        }
+
         return response;
     }
 }

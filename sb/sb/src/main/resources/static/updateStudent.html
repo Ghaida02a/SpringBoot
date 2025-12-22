@@ -76,7 +76,13 @@
         });
 
         if (res.ok) {
-          const data = await res.json();
+          // Try to parse JSON, but don't fail if it's malformed
+          try {
+            const data = await res.json();
+          } catch (jsonErr) {
+            // If JSON parsing fails, ignore it since the update was successful
+            console.log("JSON parsing failed, but update was successful:", jsonErr);
+          }
           responseBox.textContent = "Student updated successfully!";
           responseBox.style.color = "green";
         } else {

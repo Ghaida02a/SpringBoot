@@ -42,8 +42,9 @@ public class StudentController {
 
     //get Student by id
     @GetMapping("/{id}")
-    public Student getStudent(@PathVariable int id) throws Exception {
-        return studentService.getStudentById(id);
+    public StudentCreateResponse getStudent(@PathVariable int id) throws Exception {
+        Student student = studentService.getStudentById(id);
+        return StudentCreateResponse.convertStudentToDTO(student);
     }
 
     //update Student
