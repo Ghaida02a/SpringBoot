@@ -8,11 +8,12 @@ public class Constants {
     public final static String No_Data_Found = "No Data Found";
 
     // Course Create Request Constants
-    public final static String COURSE_NAME = "Course name cannot be null";
     public final static String COURSE_HOURS_NOT_VALID = "Course hours are not valid";
     public final static String COURSE_CREATE_REQUEST_INSTRUCTOR_ID_NOT_VALID = "Instructor ID is not valid";
     public final static String COURSE_CREATE_REQUEST_MARKS_NOT_VALID = "Marks are not valid";
     public final static String ACTIVE_COURSES_LIST_EMPTY = "Active courses list is empty";
+    public final static String COURSE_CREATE_REQUEST_NAME_NOT_VALID = "Course name cannot be null";
+    public final static String COURSE_CREATE_REQUEST_HOURS_NOT_VALID = "Course hours are not valid";
 
     // Instructor Create Request Constants
     public final static String INSTRUCTOR_NAME = "Instructor name cannot be null";
@@ -23,7 +24,7 @@ public class Constants {
     public final static String INSTRUCTOR_CREATE_REQUEST_COURSE_NOT_VALID = "Instructor course ID is not valid";
 
     //Department Create Request Constants
-    public final static String DEPARTMENT_NAME = "Department Name cannot be null";
+    public final static String DEPARTMENT_NAME_IS_NULLC = "Department Name cannot be null";
 
     // Mark Create Request Constants
     public final static String MARK_STUDENT_NAME_NOT_VALID = "Mark Student name cannot be null";
@@ -64,5 +65,6 @@ public class Constants {
     public final static String PHONE_NUMBER_NOT_FOUND = "Phone Number not found or is not Active";
     public final static String PHONE_NUMBER_DELETED_SUCCESS = "Phone Number deleted successfully";
 
-    public final static String STUDENT_OBJECT_NOT_VALID = "Student details cannot be empty";
+    //HTTP Status Codes
+    public static final int HTTP_STATUS_IS_NULL= 422;
 }

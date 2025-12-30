@@ -1,6 +1,7 @@
 package com.codeline.sb.DTORequest;
 
 import com.codeline.sb.Entities.PhoneNumber;
+import com.codeline.sb.Exceptions.CustomException;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.Helper.Utils;
 import lombok.AllArgsConstructor;
@@ -19,18 +20,18 @@ public class PhoneNumberCreateRequest {
 
     private Integer studentId;
 
-    public static void validatePhoneNumberCreateRequested(PhoneNumberCreateRequest dto) throws Exception {
+    public static void validatePhoneNumberCreateRequested(PhoneNumberCreateRequest dto) throws CustomException {
         if (Utils.isNull(dto.getPhoneNumber())) {
-            throw new Exception(Constants.PHONE_NUMBER_NOT_VALID);
+            throw new CustomException(Constants.PHONE_NUMBER_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getCountryCode())) {
-            throw new Exception(Constants.PHONE_NUMBER_COUNTRY_CODE_NOT_VALID);
+            throw new CustomException(Constants.PHONE_NUMBER_COUNTRY_CODE_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getIsLandLine())) {
-            throw new Exception(Constants.PHONE_NUMBER_LAND_LINE_NOT_VALID);
+            throw new CustomException(Constants.PHONE_NUMBER_LAND_LINE_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getStudentId())) {
-            throw new Exception(Constants.PHONE_NUMBER_STUDENT_ID_NOT_VALID);
+            throw new CustomException(Constants.PHONE_NUMBER_STUDENT_ID_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
     }
 

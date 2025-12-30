@@ -1,6 +1,7 @@
 package com.codeline.sb.DTORequest;
 
 import com.codeline.sb.Entities.Student;
+import com.codeline.sb.Exceptions.CustomException;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.Helper.Utils;
 import lombok.AllArgsConstructor;
@@ -27,24 +28,24 @@ public class StudentCreateRequest {
 
 
     //Validation
-    public static void validateStudentCreateRequested(StudentCreateRequest dto) throws Exception {
+    public static void validateStudentCreateRequested(StudentCreateRequest dto) throws CustomException {
         if (Utils.isNull(dto.getFirstName())) {
-            throw new Exception(Constants.STUDENT_FIRST_NAME_NOT_VALID);
+            throw new CustomException(Constants.STUDENT_FIRST_NAME_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getLastName())) {
-            throw new Exception(Constants.STUDENT_Last_NAME_NOT_VALID);
+            throw new CustomException(Constants.STUDENT_Last_NAME_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getEmail())) {
-            throw new Exception(Constants.STUDENT_EMAIL_NAME_NOT_VALID);
+            throw new CustomException(Constants.STUDENT_EMAIL_NAME_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getDateOfBirth())) {
-            throw new Exception(Constants.STUDENT_DATE_OF_BIRTH_NOT_VALID);
+            throw new CustomException(Constants.STUDENT_DATE_OF_BIRTH_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getGender())) {
-            throw new Exception(Constants.STUDENT_GENDER_NOT_VALID);
+            throw new CustomException(Constants.STUDENT_GENDER_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getPhoneNumbers()) || dto.getPhoneNumbers().isEmpty()) {
-            throw new Exception(Constants.STUDENT_PHONE_NUMBER_NOT_VALID);
+            throw new CustomException(Constants.STUDENT_PHONE_NUMBER_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         //Address can be null, so no validation
     }

@@ -3,6 +3,7 @@ package com.codeline.sb.DTORequest;
 import com.codeline.sb.Entities.Course;
 import com.codeline.sb.Entities.Instructor;
 import com.codeline.sb.Entities.Mark;
+import com.codeline.sb.Exceptions.CustomException;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.Helper.Utils;
 import jakarta.validation.constraints.NotBlank;
@@ -32,12 +33,12 @@ public class CourseCreateRequested {
     private List<MarkRequestDTO> marks;
 
     //Validation
-    public static void validateCourseCreateRequested(CourseCreateRequested dto) {
+    public static void validateCourseCreateRequested(CourseCreateRequested dto) throws CustomException {
         if (Utils.isNull(dto.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_NAME);
+            throw  new CustomException(Constants.COURSE_CREATE_REQUEST_NAME_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getHours()) || dto.getHours() <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.COURSE_HOURS_NOT_VALID);
+            throw new CustomException(Constants.COURSE_CREATE_REQUEST_HOURS_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         // instructorId and marks are optional for createCourseWithRelations
     }

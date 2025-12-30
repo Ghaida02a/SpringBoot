@@ -1,6 +1,7 @@
 package com.codeline.sb.DTORequest;
 
 import com.codeline.sb.Entities.Address;
+import com.codeline.sb.Exceptions.CustomException;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.Helper.Utils;
 import lombok.AllArgsConstructor;
@@ -21,27 +22,27 @@ public class AddressCreateRequest {
     private String postalCode;
     private Integer studentId;
 
-    public static void validateAddressCreateRequest(AddressCreateRequest dto) throws Exception {
+    public static void validateAddressCreateRequest(AddressCreateRequest dto) throws CustomException {
         if (Utils.isNull(dto.getHouseNumber())) {
-            throw new Exception(Constants.ADDRESS_HOUSE_NUMBER_NOT_VALID);
+            throw new CustomException(Constants.ADDRESS_HOUSE_NUMBER_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getStreet())) {
-            throw new Exception(Constants.ADDRESS_STREET_NOT_VALID);
+            throw new CustomException(Constants.ADDRESS_STREET_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getCity())) {
-            throw new Exception(Constants.ADDRESS_CITY_NOT_VALID);
+            throw new CustomException(Constants.ADDRESS_CITY_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getStateOrProvince())) {
-            throw new Exception(Constants.ADDRESS_STATE_OR_PROVINCE_NOT_VALID);
+            throw new CustomException(Constants.ADDRESS_STATE_OR_PROVINCE_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getCountry())) {
-            throw new Exception(Constants.ADDRESS_COUNTRY_NOT_VALID);
+            throw new CustomException(Constants.ADDRESS_COUNTRY_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getPostalCode())) {
-            throw new Exception(Constants.ADDRESS_POSTAL_CODE_NOT_VALID);
+            throw new CustomException(Constants.ADDRESS_POSTAL_CODE_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getStudentId())) {
-            throw new Exception(Constants.ADDRESS_STUDENT_ID_NOT_VALID);
+            throw new CustomException(Constants.ADDRESS_STUDENT_ID_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
     }
 

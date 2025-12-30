@@ -1,6 +1,7 @@
 package com.codeline.sb.DTORequest;
 
 import com.codeline.sb.Entities.Instructor;
+import com.codeline.sb.Exceptions.CustomException;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.Helper.Utils;
 import lombok.AllArgsConstructor;
@@ -24,18 +25,18 @@ public class InstructorCreateRequested {
     private Integer courseId;
 
     //validation
-    public static void validateInstructorRequested(InstructorCreateRequested dto) {
+    public static void validateInstructorRequested(InstructorCreateRequested dto) throws CustomException {
         if (Utils.isNull(dto.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.INSTRUCTOR_NAME);
+            throw new CustomException(Constants.INSTRUCTOR_NAME, Constants.HTTP_STATUS_IS_NULL);
         }
        if(Utils.isNull(dto.getEmail())) {
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.INSTRUCTOR_EMAIL);
+           throw new CustomException(Constants.INSTRUCTOR_EMAIL, Constants.HTTP_STATUS_IS_NULL);
        }
        if(Utils.isNull(dto.getPhoneNumber())) {
-              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.INSTRUCTOR_PHONE_NUMBER);
+              throw new CustomException(Constants.INSTRUCTOR_PHONE_NUMBER, Constants.HTTP_STATUS_IS_NULL);
        }
        if(Utils.isNull(dto.getDesignation())) {
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.INSTRUCTOR_DESIGNATION);
+           throw new CustomException(Constants.INSTRUCTOR_DESIGNATION, Constants.HTTP_STATUS_IS_NULL);
        }
     }
 

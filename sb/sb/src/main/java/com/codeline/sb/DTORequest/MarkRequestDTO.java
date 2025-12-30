@@ -1,6 +1,7 @@
 package com.codeline.sb.DTORequest;
 
 import com.codeline.sb.Entities.Mark;
+import com.codeline.sb.Exceptions.CustomException;
 import com.codeline.sb.Helper.Constants;
 import com.codeline.sb.Helper.Utils;
 import jakarta.persistence.*;
@@ -23,15 +24,15 @@ public class MarkRequestDTO {
     private Integer courseId;
 
     //Validation
-    public static void validateMarkRequestDTO(MarkRequestDTO dto) {
+    public static void validateMarkRequestDTO(MarkRequestDTO dto) throws CustomException {
         if (Utils.isNull(dto.getScore()) || dto.getScore() < 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.MARK_SCORE_NOT_VALID);
+            throw new CustomException(Constants.MARK_SCORE_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getStudentName()) || dto.getStudentName().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.MARK_STUDENT_NAME_NOT_VALID);
+            throw new CustomException(Constants.MARK_STUDENT_NAME_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
         if (Utils.isNull(dto.getCourseId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.MARK_COURSE_ID_NOT_VALID);
+            throw new CustomException(Constants.MARK_COURSE_ID_NOT_VALID, Constants.HTTP_STATUS_IS_NULL);
         }
     }
 
